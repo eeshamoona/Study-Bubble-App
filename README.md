@@ -1,7 +1,7 @@
 # Study-Bubble-App
 
 ## The Initial Idea: 
-#### March, 26th 2022
+#### March 26th, 2022
 When you sit down for a study session, you open a “study bubble”.
 
 You write down where you are, what subject you are going to study, and what’s the end goal (like when are you gonna stop studying).
