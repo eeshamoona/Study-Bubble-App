@@ -3,12 +3,11 @@ import Button from "@material-ui/core/Button";
 
 function TaskBubble() {
   return (
-    <>
-      <h3>Task Bubble</h3>
+    <div>
       <Button variant="contained" color="primary">
         Welcome Material UI
       </Button>
-    </>
+    </div>
   );
 }
 export default TaskBubble;

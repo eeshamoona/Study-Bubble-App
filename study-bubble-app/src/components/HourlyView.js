@@ -12,6 +12,6 @@ const Section = styled.section`
   background: rgba(22, 20, 51, 255);
 `;
 
-export default function StudyBubble() {
+export default function HourlyView() {
   return <Section></Section>;
 }
