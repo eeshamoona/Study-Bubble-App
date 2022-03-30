@@ -19,3 +19,13 @@ I think that this app can help people not only organize their study times but al
 
 ### Design
 ![](inspo1.png)
+
+#### March 29th, 2022
+Adding an api and database to access data for the app
+Have been designing in AdobeXD 
+
+Screenshots below:
+![](design1.png)
+![](design2.png)
+![](design3.png)
+

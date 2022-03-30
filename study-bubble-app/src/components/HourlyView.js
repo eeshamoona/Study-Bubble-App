@@ -1,6 +1,5 @@
 import * as React from "react";
 import styled from "styled-components";
-import TaskBubble from "./TaskBubble";
 
 const padding = "3em";
 const margin = "2em";
@@ -14,9 +13,5 @@ const Section = styled.section`
 `;
 
 export default function StudyBubble() {
-  return (
-    <Section>
-      <TaskBubble></TaskBubble>
-    </Section>
-  );
+  return <Section></Section>;
 }
