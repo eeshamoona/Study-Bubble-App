@@ -9,7 +9,7 @@ const Section1 = styled.section`
   background: white;
   width: 333px;
   height: 188px;
-  border-radius: 7px;
+  border-radius: 17px;
   border: none;
   margin-bottom: 20px;
   box-shadow: 0px 3px 6px #00000029;
@@ -23,7 +23,7 @@ const Section2 = styled.section`
   justify-content: space-evenly;
 `;
 
-const StyledTextarea = styled.input`
+const StyledTextarea = styled.textarea`
   resize: none;
   overflow: hidden;
   margin: 20px;

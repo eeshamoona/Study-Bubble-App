@@ -24,10 +24,6 @@ const Section2 = styled.section`
   text-align: center;
 `;
 
-const Button = styled.button`
-  color: black;
-  border-radius: 5px;
-`;
 
 const TitleText = styled.text`
   font-size: 40px;
