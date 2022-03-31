@@ -41,3 +41,14 @@ Screenshots below:
 ![](design1.png)
 ![](design2.png)
 ![](design3.png)
+
+## Completed Items
+
+#### March 29th, 2022
+
+- Added Hourly View to Main Layout
+- Styled Main Layout landing page to fit designs
+- Created flashcards
+- Create Study Bubble View
+- Created Side bar for the Study Bubble View
+- Styled Study Bubble View to fit designs
