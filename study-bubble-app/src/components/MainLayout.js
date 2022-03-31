@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import Calendar from "./Calendar";
+import HourlyView from "./HourlyView";
 
 const borderRadius = "7px";
 const margin = "2em";
@@ -24,6 +25,7 @@ const Section2 = styled.section`
   margin-left: 230px;
   margin-bottom: 30px;
   margin-right: 30px;
+  display: flex;
 `;
 
 const Section3 = styled.section`
@@ -39,6 +41,7 @@ export default function MainLayout() {
   return (
     <Section1>
       <Section2>
+        <HourlyView></HourlyView>
         <Section3>
           <div>
             <Calendar></Calendar>
