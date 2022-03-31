@@ -20,6 +20,7 @@ class Worker():
 
         self._cur.execute('''CREATE TABLE study_bubble (
                             id INTEGER PRIMARY KEY,
+                            color TEXT NOT NULL,
                             title TEXT NOT NULL,
                             location TEXT,
                             date TEXT, 

@@ -51,7 +51,7 @@ export default function MainLayout() {
     <Section1>
       <Section2>
         <Section4>
-          <MainHeader date={selectedDate}></MainHeader>
+          <MainHeader date={selectedDate} alternate={false}></MainHeader>
           <HourlyView></HourlyView>
         </Section4>
         <Section3>

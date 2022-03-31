@@ -27,6 +27,7 @@ const Section1 = styled.section`
 const Section2 = styled.div`
   display: flex;
   flex-flow: column;
+  align-self: center;
 `;
 
 const AddButton = styled.button`
@@ -47,10 +48,16 @@ const Text2 = styled.text`
 export default function MainHeader(props) {
   return (
     <Section1>
-      <Section2>
-        <Text1>{format(props.date, "MMMM dd, yyyy")}</Text1>
-        <Text2>{format(props.date, "EEEE")}</Text2>
-      </Section2>
+      {props.alternate ? (
+        <Section2>
+          <Text2>{format(props.date, "EEEE MMMM dd, yyyy")}</Text2>{" "}
+        </Section2>
+      ) : (
+        <Section2>
+          <Text1>{format(props.date, "MMMM dd, yyyy")}</Text1>
+          <Text2>{format(props.date, "EEEE")}</Text2>
+        </Section2>
+      )}
       <AddButton>+</AddButton>
     </Section1>
   );
