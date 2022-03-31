@@ -16,7 +16,7 @@ import {
 } from "date-fns";
 import "./CalendarStyles.css";
 
-export default function Calendar() {
+export default function Calendar(props) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [activeDate, setActiveDate] = useState(new Date());
 
@@ -33,13 +33,14 @@ export default function Calendar() {
     return <div className="weekContainer">{weekDays}</div>;
   };
 
-  const getHeader = () => {
+  const getHeader = (props) => {
     return (
-      <div class="header">
+      <div className="header">
         <div
           onClick={() => {
             setSelectedDate(new Date());
             setActiveDate(new Date());
+            props.dateCallback(new Date());
           }}
         >
           <div className="currentMonth">{format(activeDate, "MMMM yyyy")}</div>
@@ -70,6 +71,7 @@ export default function Calendar() {
           ${isSameDay(currentDate, new Date()) ? "today" : ""}`}
           onClick={() => {
             setSelectedDate(cloneDate);
+            props.dateCallback(cloneDate);
           }}
         >
           {format(currentDate, "d")}
@@ -102,7 +104,7 @@ export default function Calendar() {
 
   return (
     <section>
-      {getHeader()}
+      {getHeader(props)}
       {getWeekDaysNames()}
       {getDates()}
     </section>

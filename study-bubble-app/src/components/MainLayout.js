@@ -1,7 +1,8 @@
-import * as React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Calendar from "./Calendar";
 import HourlyView from "./HourlyView";
+import MainHeader from "./MiddleHeader";
 
 const borderRadius = "7px";
 const margin = "2em";
@@ -37,14 +38,25 @@ const Section3 = styled.section`
   height: -webkit-fill-available;
 `;
 
+const Section4 = styled.div`
+  display: flex;
+  flex-flow: column;
+  width: -webkit-fill-available;
+`;
+
 export default function MainLayout() {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   return (
     <Section1>
       <Section2>
-        <HourlyView></HourlyView>
+        <Section4>
+          <MainHeader date={selectedDate}></MainHeader>
+          <HourlyView></HourlyView>
+        </Section4>
         <Section3>
           <div>
-            <Calendar></Calendar>
+            <Calendar dateCallback={setSelectedDate}></Calendar>
           </div>
         </Section3>
       </Section2>
