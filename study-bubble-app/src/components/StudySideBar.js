@@ -25,6 +25,7 @@ const Section2 = styled.section`
   padding: 0px 30px;
   justify-content: space-evenly;
   width: max-content;
+  box-shadow: 0px 3px 6px #00000029;
 `;
 
 const Section3 = styled.div`
@@ -79,6 +80,7 @@ const StyledTextarea = styled.textarea`
   border: none;
   border-radius: 17px;
   height: -webkit-fill-available;
+  box-shadow: 0px 3px 6px #00000029;
 `;
 
 export default function StudySideBar() {

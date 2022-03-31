@@ -5,6 +5,8 @@ import HourlyView from "./HourlyView";
 import MainHeader from "./MiddleHeader";
 import StudyBubble from "./StudyBubble";
 import StudySideBar from "./StudySideBar";
+import SummarySection from "./SummarySection";
+
 
 const borderRadius = "17px";
 const margin = "2em";
@@ -31,13 +33,15 @@ const Section2 = styled.section`
   display: flex;
 `;
 
-const Section3 = styled.section`
+const Section3 = styled.div`
   width: 360px;
   float: right;
   padding: 20px;
   border-radius: ${borderRadius};
   background: #e8e8f6;
   height: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Section4 = styled.div`
@@ -46,13 +50,34 @@ const Section4 = styled.div`
   width: -webkit-fill-available;
 `;
 
+const Section5 = styled.section`
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 20px;
+`;
+
+const Button = styled.button`
+  background: #f6f5fc;
+  border-radius: 50px;
+  width: -webkit-fill-available;
+  height: 40px;
+  font-size: 24px;
+  border: none;
+  box-shadow: 0px 3px 6px #00000029;
+  cursor: pointer;
+`;
+
 export default function MainLayout() {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [isStudyBubbleView, setIsStudyBubbleView] = useState(true);
-
+  const [isStudyBubbleView, setIsStudyBubbleView] = useState(false);
+  const updateIstStudyBubbleView = () => {
+    setIsStudyBubbleView(!isStudyBubbleView);
+  };
   return (
     <Section1>
-      <StudySideBar></StudySideBar>
+      {isStudyBubbleView ? <StudySideBar></StudySideBar> : <div></div>}
       <Section2>
         <Section4>
           <MainHeader
@@ -66,9 +91,17 @@ export default function MainLayout() {
           )}
         </Section4>
         <Section3>
-          <div>
+          <div style={{ flex: 1 }}>
             <Calendar dateCallback={setSelectedDate}></Calendar>
           </div>
+          <Section5>
+            <SummarySection></SummarySection>{" "}
+            <Button onClick={updateIstStudyBubbleView}>
+              {isStudyBubbleView
+                ? "Close the Study Bubble"
+                : "Open this Study Bubble"}
+            </Button>
+          </Section5>
         </Section3>
       </Section2>
     </Section1>
