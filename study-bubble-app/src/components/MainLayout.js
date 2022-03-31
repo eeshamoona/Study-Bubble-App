@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Calendar from "./Calendar";
 import HourlyView from "./HourlyView";
 import MainHeader from "./MiddleHeader";
+import StudyBubble from "./StudyBubble";
 
 const borderRadius = "7px";
 const margin = "2em";
@@ -46,13 +47,21 @@ const Section4 = styled.div`
 
 export default function MainLayout() {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isStudyBubbleView, setIsStudyBubbleView] = useState(true);
 
   return (
     <Section1>
       <Section2>
         <Section4>
-          <MainHeader date={selectedDate} alternate={false}></MainHeader>
-          <HourlyView></HourlyView>
+          <MainHeader
+            date={selectedDate}
+            alternate={isStudyBubbleView}
+          ></MainHeader>
+          {isStudyBubbleView ? (
+            <StudyBubble></StudyBubble>
+          ) : (
+            <HourlyView></HourlyView>
+          )}
         </Section4>
         <Section3>
           <div>

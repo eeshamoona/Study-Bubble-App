@@ -37,7 +37,7 @@ const LocationText = styled.text`
   font-size: 18px;
 `;
 
-export default function StudyBubble() {
+export default function StudySideBar() {
   return (
     <Section2>
       <TitleText>History Study Session</TitleText>

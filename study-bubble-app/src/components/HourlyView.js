@@ -7,7 +7,7 @@ const margin = "2em";
 const Section = styled.section`
   background: transparent;
   width: -webkit-fill-available;
-  padding-top: 20px;
+  padding: 20px 0px;
   overflow-y: scroll;
 `;
 
@@ -15,7 +15,7 @@ const HourLine = styled.div`
   border-top: 1px solid #707070;
   margin-left: 50px;
   margin-left: 10px;
-  height: 50px;
+  height: 48px;
   flex: 1;
 
   &:hover {
