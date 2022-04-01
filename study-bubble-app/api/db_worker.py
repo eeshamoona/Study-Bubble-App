@@ -1,106 +1,245 @@
+#!/usr/bin/python
 import sqlite3
+DATABASE_NAME = "LCard.db"
 
-# Worker class for database operations
-class Worker():
-    # Connect to provided database, initialize row factory, create cursor
-    def __init__(self, db_name) -> None:
-        self._con = sqlite3.connect(db_name, check_same_thread=False)
-        self._con.row_factory = sqlite3.Row
-        self._cur = self._con.cursor()
+def connect_to_db():
+    conn = sqlite3.connect(DATABASE_NAME)
+    return conn
 
-    # Create Users and Transactions tables
-    def create_tables(self) -> None:
-        self._cur.execute('''CREATE TABLE users (
-                            user_id INTEGER PRIMARY KEY,
-                            email TEXT NOT NULL UNIQUE,
-                            password TEXT NOT NULL,
-                            username TEXT NOT NULL,
-                            balance FLOAT
-                            );''')
-
-        self._cur.execute('''CREATE TABLE study_bubble (
-                            id INTEGER PRIMARY KEY,
-                            color TEXT NOT NULL,
-                            title TEXT NOT NULL,
-                            location TEXT,
-                            date TEXT, 
-                            starts TEXT,
-                            ends TEXT,
-                            summary TEXT [],
-                            card_num INTEGER
-                            );''')
-
-        self._cur.execute('''CREATE TABLE learning_card (
-                        id INTEGER PRIMARY KEY,
+def create_db_table():
+    tables = [
+        """CREATE TABLE IF NOT EXISTS StudyBubble(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        color TEXT NOT NULL,
+                        title TEXT NOT NULL,
+                        location TEXT,
+                        date TEXT, 
+                        starts TEXT,
+                        ends TEXT,
+                        summary TEXT,
+                        card_num INTEGER
+            )
+            """,
+        """CREATE TABLE IF NOT EXISTS LCard(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                         front TEXT NOT NULL,
                         back TEXT,
-                        study_bubble_id INTEGER,
-                        FOREIGN KEY (study_bubble_id) REFERENCES studybubble(id)
-                        );''')
-        self._con.commit()
+                        study_bubble_id INTEGER
+            )
+            """
+    ]
+    db = connect_to_db()
+    cursor = db.cursor()
+    for table in tables:
+        cursor.execute(table)
 
-    # Select all tables from the database
-    def select_all_tables(self) -> list:
-        self._cur.execute('''SELECT name FROM sqlite_master WHERE type="table";''')
-        return self._cur.fetchall()
+def insert_StudyBubble(StudyBubble):
+    inserted_StudyBubble = {}
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute("INSERT INTO StudyBubble (color, title, location, date,starts, ends,summary, card_num) VALUES (?, ?, ?, ?,?,?,?,?)", 
+                    (StudyBubble['color'], StudyBubble['title'], 
+                    StudyBubble['location'], StudyBubble['date'],
+                    StudyBubble['starts'], StudyBubble['ends'], 
+                    StudyBubble['summary'], StudyBubble['card_num'] ) )
+        conn.commit()
+        inserted_StudyBubble = get_StudyBubble_by_id(cur.lastrowid)
+    except:
+        conn().rollback()
 
-    # Add a record to the users table
-    def add_to_users(self, user) -> None:
-        self._cur.execute('''INSERT INTO users (email, password, username, balance) VALUES
-                            (:email, :password, :username, :balance);''', user)
-        self._con.commit()
+    finally:
+        conn.close()
 
-    # Select all users in the database
-    def select_all_users(self) -> list:
-        self._cur.execute('''SELECT * FROM users;''')
-        return self._cur.fetchall()
+    return inserted_StudyBubble
 
-    # Select user with the provided email in the database
-    def select_from_users(self, user_email) -> list:
-        self._cur.execute('''SELECT * FROM users
-                            WHERE email = ?;''', (user_email,))
-        return self._cur.fetchall()
+def get_StudyBubbles():
+    StudyBubbles = []
+    try:
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM StudyBubble")
+        rows = cur.fetchall()
 
-    # Update the balance of the user with the provided email
-    def update_user_balance(self, user_email, balance) -> None:
-        self._cur.execute('''UPDATE users
-                            SET balance = ?
-                            WHERE email = ?;''', (balance, user_email))
-        self._con.commit()
+        # convert row objects to dictionary
+        for i in rows:
+            StudyBubble = {}
+            StudyBubble["id"] = i["id"]
+            StudyBubble['color'] = i['color']
+            StudyBubble['title'] = i['title']
+            StudyBubble['location'] = i['location']
+            StudyBubble['date'] = i['date']
+            StudyBubble['starts'] = i['starts']
+            StudyBubble['ends'] = i['ends']
+            StudyBubble['summary'] = i['summary']
+            StudyBubble['card_num'] = i['card_num']
+            StudyBubbles.append(StudyBubble)
 
-    # Delete the user with the provided user_email from the database
-    def delete_from_users(self, user_email) -> None:
-        self._cur.execute('''DELETE FROM users WHERE email=?;''', (user_email,))
-        self._con.commit()
+    except:
+        StudyBubbles = []
 
-    # Add a record to the transactions table
-    def add_to_transactions(self, transaction) -> None:
-        self._cur.execute('''INSERT INTO transactions (user_email, date, description, type, amount) VALUES
-                            (:user_email, :date, :description, :type, :amount);''', transaction)
-        self._con.commit()
+    return StudyBubbles
 
-    # Select all transactions in the database
-    def select_all_transactions(self) -> list:
-        self._cur.execute('''SELECT * FROM transactions;''')
-        return self._cur.fetchall()
 
-    # Select transaction with the provided user email from the database
-    def select_from_transactions(self, user_email) -> list:
-        self._cur.execute('''SELECT * FROM transactions
-                            WHERE user_email = ?;''', (user_email,))
-        return self._cur.fetchall()
+def get_StudyBubble_by_id(StudyBubble_id):
+    StudyBubble = {}
+    try:
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM StudyBubble WHERE id = ?", 
+                       (StudyBubble_id,))
+        row = cur.fetchone()
 
-    # Select transaction between the provided dates with the provided user email from the database
-    def select_from_transactions_between_dates(self, user_email, start_date, end_date) -> list:
-        self._cur.execute('''SELECT * FROM transactions
-                            WHERE user_email = ? AND date >= ? AND date <= ?;''', (user_email, start_date, end_date))
-        return self._cur.fetchall()
+        # convert row object to dictionary
+        StudyBubble["id"] = row["id"]
+        StudyBubble['color'] = row['color']
+        StudyBubble['title'] = row['title']
+        StudyBubble['location'] = row['location']
+        StudyBubble['date'] = row['date']
+        StudyBubble['starts'] = row['starts']
+        StudyBubble['ends'] = row['ends']
+        StudyBubble['summary'] = row['summary']
+        StudyBubble['card_num'] = row['card_num']
+    except:
+        StudyBubble = {}
 
-    # Delete the transaction with the provided transaction_id from the database
-    def delete_from_transactions(self, transaction_id) -> None:
-        self._cur.execute('''DELETE FROM transactions WHERE transaction_id=?;''', (transaction_id,))
-        self._con.commit()
+    return StudyBubble
 
-    # Close connection to the database
-    def close_connection(self) -> None:
-        self._con.close()
+def update_StudyBubble(StudyBubble):
+    updated_StudyBubble = {}
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute("UPDATE StudyBubble SET color = ?, title = ?, location = ?, date =?, starts =?, ends =?, summary=?, card_num=?, WHERE id =?",  
+                     (StudyBubble['color'], StudyBubble['title'], 
+                    StudyBubble['location'], StudyBubble['date'],
+                    StudyBubble['starts'], StudyBubble['ends'], 
+                    StudyBubble['summary'], StudyBubble['card_num'], 
+                     StudyBubble["id"],))
+        conn.commit()
+        #return the user
+        updated_StudyBubble = get_StudyBubble_by_id(StudyBubble["id"])
+
+    except:
+        conn.rollback()
+        updated_StudyBubble = {}
+    finally:
+        conn.close()
+
+    return updated_StudyBubble
+
+def delete_StudyBubble(StudyBubble_id):
+    message = {}
+    try:
+        conn = connect_to_db()
+        conn.execute("DELETE from StudyBubble WHERE id = ?",     
+                      (StudyBubble_id,))
+        conn.commit()
+        message["status"] = "StudyBubble deleted successfully"
+    except:
+        conn.rollback()
+        message["status"] = "Cannot delete StudyBubble"
+    finally:
+        conn.close()
+
+    return message
+# ------------------------------------------------------------------------------
+def insert_LCard(LCard):
+    inserted_LCard = {}
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute("INSERT INTO LCard (front, back, study_bubble_id) VALUES (?, ?, ?)", 
+                    (LCard['front'],   
+                    LCard['back'], LCard['study_bubble_id']) )
+        conn.commit()
+        inserted_LCard = get_LCard_by_id(cur.lastrowid)
+    except:
+        conn().rollback()
+
+    finally:
+        conn.close()
+
+    return inserted_LCard
+
+def get_LCards():
+    LCards = []
+    try:
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM LCard")
+        rows = cur.fetchall()
+
+        # convert row objects to dictionary
+        for i in rows:
+            LCard = {}
+            LCard["id"] = i["id"]
+            LCard["front"] = i["front"]
+            LCard["back"] = i["back"]
+            LCard["study_bubble_id"] = i["study_bubble_id"]
+            LCards.append(LCard)
+
+    except:
+        LCards = []
+
+    return LCards
+
+
+def get_LCard_by_id(LCard_id):
+    LCard = {}
+    try:
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM LCard WHERE id = ?", 
+                       (LCard_id,))
+        row = cur.fetchone()
+
+        # convert row object to dictionary
+        LCard["id"] = row["id"]
+        LCard["front"] = row["front"]
+        LCard["back"] = row["back"]
+        LCard["study_bubble_id"] = row["study_bubble_id"]
+    except:
+        LCard = {}
+
+    return LCard
+
+def update_LCard(LCard):
+    updated_LCard = {}
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute("UPDATE LCard SET front = ?, back = ?, study_bubble_id = ? WHERE id =?",  
+                     (LCard["front"], LCard["back"], LCard["study_bubble_id"], 
+                     LCard["id"],))
+        conn.commit()
+        #return the user
+        updated_LCard = get_LCard_by_id(LCard["id"])
+
+    except:
+        conn.rollback()
+        updated_LCard = {}
+    finally:
+        conn.close()
+
+    return updated_LCard
+
+def delete_LCard(LCard_id):
+    message = {}
+    try:
+        conn = connect_to_db()
+        conn.execute("DELETE from LCard WHERE id = ?",     
+                      (LCard_id,))
+        conn.commit()
+        message["status"] = "User deleted successfully"
+    except:
+        conn.rollback()
+        message["status"] = "Cannot delete user"
+    finally:
+        conn.close()
+
+    return message
