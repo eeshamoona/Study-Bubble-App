@@ -53,6 +53,10 @@ def api_update_LCArd():
 def api_delete_LCard(LCard_id):
     return jsonify(db_worker.delete_LCard(LCard_id))
 
+@app.route('/api/LCards/all/<StudyBubble_id>', methods=['GET'])
+def api_get_LCard_with_StudyBubble_id(StudyBubble_id):
+    return jsonify(db_worker.get_LCard_with_StudyBubble_id(StudyBubble_id))
+
 if __name__ == "__main__":
     create_db_table()
     """

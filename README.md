@@ -52,3 +52,7 @@ Screenshots below:
 - Create Study Bubble View
 - Created Side bar for the Study Bubble View
 - Styled Study Bubble View to fit designs
+
+#### March 31st, 2022
+- Connected two views together via button
+- Create backend data base and routing function

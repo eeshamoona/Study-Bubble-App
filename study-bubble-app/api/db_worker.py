@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import sqlite3
-DATABASE_NAME = "LCard.db"
+DATABASE_NAME = "database.db"
 
 def connect_to_db():
     conn = sqlite3.connect(DATABASE_NAME)
@@ -243,3 +243,26 @@ def delete_LCard(LCard_id):
         conn.close()
 
     return message
+
+def get_LCard_with_StudyBubble_id(StudyBubble_id):
+    LCards = []
+    try:
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM LCard WHERE study_bubble_id = ?",(StudyBubble_id))
+        rows = cur.fetchall()
+
+        # convert row objects to dictionary
+        for i in rows:
+            LCard = {}
+            LCard["id"] = i["id"]
+            LCard["front"] = i["front"]
+            LCard["back"] = i["back"]
+            LCard["study_bubble_id"] = i["study_bubble_id"]
+            LCards.append(LCard)
+
+    except:
+        LCards = []
+
+    return LCards
