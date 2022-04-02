@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import TaskBubble from "./LearningCard";
 
@@ -19,7 +19,7 @@ const Section2 = styled.section`
   background: transparent;
   width: -webkit-fill-available;
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   justify-content: space-evenly;
 `;
 
@@ -35,7 +35,7 @@ const StyledTextarea = styled.textarea`
 
 const saveInput = () => {};
 
-export default function LearningCard() {
+export default function LearningCard(props) {
   const [frontText, setFrontText] = useState("");
   const [backText, setBackText] = useState("");
 
@@ -47,6 +47,12 @@ export default function LearningCard() {
     setBackText(event.target.value);
   };
 
+  useEffect(() => {
+    if (props.learningCard) {
+      setFrontText(props.learningCard["front"]);
+      setBackText(props.learningCard["back"]);
+    }
+  }, [props]);
   return (
     <Section2>
       <Section1>

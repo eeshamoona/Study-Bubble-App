@@ -7,7 +7,6 @@ import StudyBubble from "./StudyBubble";
 import StudySideBar from "./StudySideBar";
 import SummarySection from "./SummarySection";
 
-
 const borderRadius = "17px";
 const margin = "2em";
 
@@ -75,9 +74,16 @@ export default function MainLayout() {
   const updateIstStudyBubbleView = () => {
     setIsStudyBubbleView(!isStudyBubbleView);
   };
+
+  const [activeStudyBubbleID, setActiveStudyBubbleID] = useState(1);
+
+  const updateActiveStudyBubbleId = (id) => {
+    setActiveStudyBubbleID(id);
+  }
+
   return (
     <Section1>
-      {isStudyBubbleView ? <StudySideBar></StudySideBar> : <div></div>}
+      {isStudyBubbleView ? <StudySideBar studyBubbleId={activeStudyBubbleID}></StudySideBar> : <div></div>}
       <Section2>
         <Section4>
           <MainHeader
@@ -85,9 +91,9 @@ export default function MainLayout() {
             alternate={isStudyBubbleView}
           ></MainHeader>
           {isStudyBubbleView ? (
-            <StudyBubble></StudyBubble>
+            <StudyBubble studyBubbleId={activeStudyBubbleID}></StudyBubble>
           ) : (
-            <HourlyView></HourlyView>
+            <HourlyView activeStudyBubbleCallback = {updateActiveStudyBubbleId}></HourlyView>
           )}
         </Section4>
         <Section3>
@@ -95,7 +101,7 @@ export default function MainLayout() {
             <Calendar dateCallback={setSelectedDate}></Calendar>
           </div>
           <Section5>
-            <SummarySection></SummarySection>{" "}
+            <SummarySection></SummarySection>
             <Button onClick={updateIstStudyBubbleView}>
               {isStudyBubbleView
                 ? "Close the Study Bubble"

@@ -112,12 +112,13 @@ def update_StudyBubble(StudyBubble):
     try:
         conn = connect_to_db()
         cur = conn.cursor()
-        cur.execute("UPDATE StudyBubble SET color = ?, title = ?, location = ?, date =?, starts =?, ends =?, summary=?, card_num=?, WHERE id =?",  
-                     (StudyBubble['color'], StudyBubble['title'], 
-                    StudyBubble['location'], StudyBubble['date'],
-                    StudyBubble['starts'], StudyBubble['ends'], 
-                    StudyBubble['summary'], StudyBubble['card_num'], 
-                     StudyBubble["id"],))
+        print(StudyBubble)
+        statement = "UPDATE StudyBubble SET color = ?, title = ?, location = ?, date = ?, starts = ?, ends = ?, summary = ?, card_num= ? WHERE id = ?"
+        cur.execute(statement, [
+            StudyBubble['color'], StudyBubble['title'], StudyBubble['location'], StudyBubble['date'], StudyBubble['starts'], 
+            StudyBubble['ends'], StudyBubble['summary'], StudyBubble['card_num'], 
+            StudyBubble["id"]
+            ])
         conn.commit()
         #return the user
         updated_StudyBubble = get_StudyBubble_by_id(StudyBubble["id"])
@@ -145,6 +146,30 @@ def delete_StudyBubble(StudyBubble_id):
         conn.close()
 
     return message
+
+def increment_cardnum(StudyBubble_id):
+    updated_StudyBubble = {}
+    studybubble = get_StudyBubble_by_id(StudyBubble_id)
+    cardNum = studybubble['card_num'] + 1
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        statement = "UPDATE StudyBubble SET card_num= ? WHERE id = ?"
+        cur.execute(statement, [
+            cardNum, 
+            StudyBubble_id
+            ])
+        conn.commit()
+        #return the user
+        updated_StudyBubble = get_StudyBubble_by_id(StudyBubble_id)
+
+    except:
+        conn.rollback()
+        updated_StudyBubble = {}
+    finally:
+        conn.close()
+
+    return updated_StudyBubble
 # ------------------------------------------------------------------------------
 def insert_LCard(LCard):
     inserted_LCard = {}
@@ -156,6 +181,9 @@ def insert_LCard(LCard):
                     LCard['back'], LCard['study_bubble_id']) )
         conn.commit()
         inserted_LCard = get_LCard_by_id(cur.lastrowid)
+
+        update_StudyBubble = increment_cardnum(LCard['study_bubble_id'])
+        print(update_StudyBubble)
     except:
         conn().rollback()
 

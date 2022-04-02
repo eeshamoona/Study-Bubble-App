@@ -1,38 +1,33 @@
+const apiUrl = "http://192.168.1.131:8000/api";
 
-const apiUrl = 'http://192.168.1.131:8000/api/';
-function buildUrl(endpoint, id = null, queryString = null){
-  const queryAddition = querString ? `?${queryString}` : '';
-  const idAddition = id ? `/${id}` : '';
+function buildUrl(endpoint, id = null, queryString = null) {
+  const queryAddition = queryString ? `?${queryString}` : "";
+  const idAddition = id ? `/${id}` : "";
   return `${apiUrl}/${endpoint}${idAddition}/${queryAddition}`;
 }
 
-function apiGet(endpoint, id=null, queryString = null , headers = {}){
+function apiGet(endpoint, id = null, queryString = null, headers = {}) {
   return fetch(buildUrl(endpoint, id, queryString), {
-    method: 'GET',
+    method: "GET",
     headers,
-  }).then((response) => response.json()) 
+  }).then((response) => response.json());
 }
 
-function apiPost(endpoint, id=null, payload, headers={}) {
+function apiPost(endpoint, id = null, payload, headers = {}) {
   return fetch(buildUrl(endpoint, id), {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...headers,
     },
-    body: JSON.stringify(paylod),
-  }).then((response) => ({status:response.status, body:response.json()}));
+    body: JSON.stringify(payload),
+  }).then((response) => ({ status: response.status, body: response.json() }));
 }
 
 function apiDelete(endpoint, id) {
   return fetch(buildUrl(endpoint, id), {
-    method: 'DELETE',
+    method: "DELETE",
   }).then((response) => response.json());
 }
 
-export {
-  buildUrl,
-  apiGet,
-  apiPost, 
-  apiDelete
-}
+export { buildUrl, apiGet, apiPost, apiDelete };

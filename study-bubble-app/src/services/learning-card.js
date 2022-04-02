@@ -24,4 +24,4 @@ function addLCard(front, back, studyBubbleId) {
   }).then((response) => response.body);
 }
 
-export { getAllLCards, getLCard, addLCard, getLCardsFromStudyBubble};
+export { getAllLCards, getLCard, addLCard, getLCardsFromStudyBubble };

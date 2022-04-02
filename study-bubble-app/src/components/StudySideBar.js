@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import TaskBubble from "./LearningCard";
 import LearningCard from "./LearningCard";
+import { getStudyBubble } from "../services/study-bubble";
 
 const padding = "3em";
 const margin = "2em";
@@ -83,8 +84,9 @@ const StyledTextarea = styled.textarea`
   box-shadow: 0px 3px 6px #00000029;
 `;
 
-export default function StudySideBar() {
+export default function StudySideBar(props) {
   const [notesText, setNotesText] = useState("");
+  const [cardNum, setCardNum] = useState("");
   const updateNotesText = (event) => {
     setNotesText(event.target.value);
   };
@@ -92,11 +94,18 @@ export default function StudySideBar() {
   const eraseNotes = (event) => {
     setNotesText("");
   };
+  useEffect(() => {
+    if (props.studyBubbleId) {
+      getStudyBubble(props.studyBubbleId).then((response) =>
+        setCardNum(response["card_num"])
+      );
+    }
+  }, [props]);
   return (
     <Section1>
       <Section2>
         <Section3>
-          <TitleText>4</TitleText>
+          <TitleText>{cardNum}</TitleText>
           <SubText>Learning Cards</SubText>
         </Section3>
         <Section3>
