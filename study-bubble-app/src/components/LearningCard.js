@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import TaskBubble from "./LearningCard";
+import { updateLCard } from "../services/learning-card";
 
 const padding = "3em";
 const margin = "2em";
@@ -33,8 +34,6 @@ const StyledTextarea = styled.textarea`
   border: none;
 `;
 
-const saveInput = () => {};
-
 export default function LearningCard(props) {
   const [frontText, setFrontText] = useState("");
   const [backText, setBackText] = useState("");
@@ -45,6 +44,15 @@ export default function LearningCard(props) {
 
   const updateBackText = (event) => {
     setBackText(event.target.value);
+  };
+
+  const sendData = () => {
+    updateLCard(
+      frontText,
+      backText,
+      props.learningCard["study_bubble_id"],
+      props.learningCard["id"]
+    ).then((response) => console.log(response));
   };
 
   useEffect(() => {
@@ -60,6 +68,7 @@ export default function LearningCard(props) {
           type="textarea"
           value={frontText}
           onChange={updateFrontText}
+          onBlur={sendData}
         />
       </Section1>
       <Section1>
@@ -67,6 +76,7 @@ export default function LearningCard(props) {
           type="textarea"
           value={backText}
           onChange={updateBackText}
+          onBlur={sendData}
         />
       </Section1>
     </Section2>

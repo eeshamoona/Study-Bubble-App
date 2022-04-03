@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Calendar from "./Calendar";
 import HourlyView from "./HourlyView";
-import MainHeader from "./MiddleHeader";
+import MiddleHeader from "./MiddleHeader";
 import StudyBubble from "./StudyBubble";
 import StudySideBar from "./StudySideBar";
 import SummarySection from "./SummarySection";
@@ -71,6 +71,7 @@ const Button = styled.button`
 export default function MainLayout() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isStudyBubbleView, setIsStudyBubbleView] = useState(false);
+  const [refresh, setRefresh]= useState(false);
   const updateIstStudyBubbleView = () => {
     setIsStudyBubbleView(!isStudyBubbleView);
   };
@@ -81,17 +82,23 @@ export default function MainLayout() {
     setActiveStudyBubbleID(id);
   }
 
+  const refreshCallback = () => {
+    setRefresh(!refresh);
+  }
+
   return (
     <Section1>
-      {isStudyBubbleView ? <StudySideBar studyBubbleId={activeStudyBubbleID}></StudySideBar> : <div></div>}
+      {isStudyBubbleView ? <StudySideBar studyBubbleId={activeStudyBubbleID} refresh={refresh}></StudySideBar> : <div></div>}
       <Section2>
         <Section4>
-          <MainHeader
+          <MiddleHeader
             date={selectedDate}
             alternate={isStudyBubbleView}
-          ></MainHeader>
+            studyBubbleId={isStudyBubbleView ? activeStudyBubbleID: null}
+            refreshCallback={refreshCallback}
+          ></MiddleHeader>
           {isStudyBubbleView ? (
-            <StudyBubble studyBubbleId={activeStudyBubbleID}></StudyBubble>
+            <StudyBubble studyBubbleId={activeStudyBubbleID} refresh={refresh}></StudyBubble>
           ) : (
             <HourlyView activeStudyBubbleCallback = {updateActiveStudyBubbleId}></HourlyView>
           )}

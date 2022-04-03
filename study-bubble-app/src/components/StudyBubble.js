@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import TaskBubble from "./LearningCard";
 import LearningCard from "./LearningCard";
 import { getLCardsFromStudyBubble } from "../services/learning-card";
 import { getStudyBubble } from "../services/study-bubble";
-
-const padding = "3em";
-const margin = "2em";
 
 const Section1 = styled.section`
   background: transparent;
@@ -45,15 +41,17 @@ export default function StudyBubble(props) {
     getLCardsFromStudyBubble(props.studyBubbleId).then((response) =>
       setLCards(response)
     );
-  }, [props]);
+  }, [props.refresh, props.studyBubbleId]);
   return (
     <Section2>
       <TitleText>{StudyBubble["title"]}</TitleText>
       <LocationText>{StudyBubble["location"]}</LocationText>
       <Section1>
-        {LCards.map((card) => (
-          <LearningCard learningCard={card}></LearningCard>
-        ))}
+        {LCards.slice(0)
+          .reverse()
+          .map((card) => (
+            <LearningCard learningCard={card}></LearningCard>
+          ))}
       </Section1>
     </Section2>
   );

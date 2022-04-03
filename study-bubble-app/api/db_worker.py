@@ -170,6 +170,30 @@ def increment_cardnum(StudyBubble_id):
         conn.close()
 
     return updated_StudyBubble
+
+def decrement_cardnum(StudyBubble_id):
+    updated_StudyBubble = {}
+    studybubble = get_StudyBubble_by_id(StudyBubble_id)
+    cardNum = studybubble['card_num'] - 1
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        statement = "UPDATE StudyBubble SET card_num= ? WHERE id = ?"
+        cur.execute(statement, [
+            cardNum, 
+            StudyBubble_id
+            ])
+        conn.commit()
+        #return the user
+        updated_StudyBubble = get_StudyBubble_by_id(StudyBubble_id)
+
+    except:
+        conn.rollback()
+        updated_StudyBubble = {}
+    finally:
+        conn.close()
+
+    return updated_StudyBubble
 # ------------------------------------------------------------------------------
 def insert_LCard(LCard):
     inserted_LCard = {}
@@ -259,11 +283,15 @@ def update_LCard(LCard):
 def delete_LCard(LCard_id):
     message = {}
     try:
+        study_bubble_id = get_LCard_by_id(LCard_id)['study_bubble_id']
         conn = connect_to_db()
         conn.execute("DELETE from LCard WHERE id = ?",     
                       (LCard_id,))
         conn.commit()
         message["status"] = "User deleted successfully"
+
+        updated = decrement_cardnum(study_bubble_id)
+        print(updated)
     except:
         conn.rollback()
         message["status"] = "Cannot delete user"

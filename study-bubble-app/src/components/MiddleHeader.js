@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import {
   format,
@@ -12,6 +12,8 @@ import {
   subMonths,
   addMonths,
 } from "date-fns";
+
+import { addLCard } from "../services/learning-card";
 
 const borderRadius = "7px";
 const margin = "2em";
@@ -45,7 +47,13 @@ const Text2 = styled.text`
   font-weight: normal;
 `;
 
-export default function MainHeader(props) {
+export default function MiddleHeader(props) {
+  const handleOnClick = () => {
+    if (props.studyBubbleId) {
+      addLCard("", "", props.studyBubbleId);
+      props.refreshCallback()
+    }
+  };
   return (
     <Section1>
       {props.alternate ? (
@@ -58,7 +66,7 @@ export default function MainHeader(props) {
           <Text2>{format(props.date, "EEEE")}</Text2>
         </Section2>
       )}
-      <AddButton>+</AddButton>
+      <AddButton onClick={handleOnClick}>+</AddButton>
     </Section1>
   );
 }

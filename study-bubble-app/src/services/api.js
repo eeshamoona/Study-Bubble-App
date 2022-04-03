@@ -24,10 +24,21 @@ function apiPost(endpoint, id = null, payload, headers = {}) {
   }).then((response) => ({ status: response.status, body: response.json() }));
 }
 
+function apiPut(endpoint, id = null, payload, headers = {}) {
+  return fetch(buildUrl(endpoint, id), {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...headers,
+    },
+    body: JSON.stringify(payload),
+  }).then((response) => ({ status: response.status, body: response.json() }));
+}
+
 function apiDelete(endpoint, id) {
   return fetch(buildUrl(endpoint, id), {
     method: "DELETE",
   }).then((response) => response.json());
 }
 
-export { buildUrl, apiGet, apiPost, apiDelete };
+export { buildUrl, apiGet, apiPost, apiDelete, apiPut};

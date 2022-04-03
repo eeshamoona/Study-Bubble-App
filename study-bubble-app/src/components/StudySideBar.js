@@ -100,7 +100,7 @@ export default function StudySideBar(props) {
         setCardNum(response["card_num"])
       );
     }
-  }, [props]);
+  }, [props.refresh]);
   return (
     <Section1>
       <Section2>
