@@ -11,10 +11,12 @@
 }
 .outer .below {
   z-index: 2;
-  width: -webkit-fill-available;
+  width: inherit;
+  padding-left: 50px;
+  position: "relative";
+  cursor: pointer;
 }
 .outer .top {
   z-index: 1;
-  width: inherit;
-  padding-left: 45px;
+  width: -webkit-fill-available;
 }

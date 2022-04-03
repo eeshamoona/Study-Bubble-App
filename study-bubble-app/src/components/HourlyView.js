@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import {getStudyBubbleWithDate} from "../services/study-bubble";
+import { getStudyBubbleWithDate } from "../services/study-bubble";
 
 const padding = "3em";
 const margin = "2em";
@@ -20,7 +20,7 @@ const HourLine = styled.div`
   flex: 1;
 
   &:hover {
-    background: pink;
+    background: #cbc3e3;
   }
 `;
 
