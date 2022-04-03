@@ -71,7 +71,7 @@ const Button = styled.button`
 export default function MainLayout() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isStudyBubbleView, setIsStudyBubbleView] = useState(false);
-  const [refresh, setRefresh]= useState(false);
+  const [refresh, setRefresh] = useState(false);
   const updateIstStudyBubbleView = () => {
     setIsStudyBubbleView(!isStudyBubbleView);
   };
@@ -80,27 +80,39 @@ export default function MainLayout() {
 
   const updateActiveStudyBubbleId = (id) => {
     setActiveStudyBubbleID(id);
-  }
+  };
 
   const refreshCallback = () => {
     setRefresh(!refresh);
-  }
+  };
 
   return (
     <Section1>
-      {isStudyBubbleView ? <StudySideBar studyBubbleId={activeStudyBubbleID} refresh={refresh}></StudySideBar> : <div></div>}
+      {isStudyBubbleView ? (
+        <StudySideBar
+          studyBubbleId={activeStudyBubbleID}
+          refresh={refresh}
+        ></StudySideBar>
+      ) : (
+        <div style={{ width: "250px" }}></div>
+      )}
       <Section2>
         <Section4>
           <MiddleHeader
             date={selectedDate}
             alternate={isStudyBubbleView}
-            studyBubbleId={isStudyBubbleView ? activeStudyBubbleID: null}
+            studyBubbleId={isStudyBubbleView ? activeStudyBubbleID : null}
             refreshCallback={refreshCallback}
           ></MiddleHeader>
           {isStudyBubbleView ? (
-            <StudyBubble studyBubbleId={activeStudyBubbleID} refresh={refresh}></StudyBubble>
+            <StudyBubble
+              studyBubbleId={activeStudyBubbleID}
+              refresh={refresh}
+            ></StudyBubble>
           ) : (
-            <HourlyView activeStudyBubbleCallback = {updateActiveStudyBubbleId}></HourlyView>
+            <HourlyView
+              activeStudyBubbleCallback={updateActiveStudyBubbleId}
+            ></HourlyView>
           )}
         </Section4>
         <Section3>

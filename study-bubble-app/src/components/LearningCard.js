@@ -25,6 +25,10 @@ const Section2 = styled.section`
 `;
 
 const StyledTextarea = styled.textarea`
+  white-space: normal;
+  text-align: justify;
+  -moz-text-align-last: center;
+  text-align-last: center;
   resize: none;
   overflow: hidden;
   margin: 20px;
