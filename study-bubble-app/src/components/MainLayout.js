@@ -6,6 +6,7 @@ import MiddleHeader from "./MiddleHeader";
 import StudyBubble from "./StudyBubble";
 import StudySideBar from "./StudySideBar";
 import SummarySection from "./SummarySection";
+import DateOverlay from "./DateOverlay";
 
 const borderRadius = "17px";
 const margin = "2em";
@@ -75,9 +76,7 @@ export default function MainLayout() {
   const updateIstStudyBubbleView = () => {
     setIsStudyBubbleView(!isStudyBubbleView);
   };
-
   const [activeStudyBubbleID, setActiveStudyBubbleID] = useState(1);
-
   const updateActiveStudyBubbleId = (id) => {
     setActiveStudyBubbleID(id);
   };
@@ -110,9 +109,10 @@ export default function MainLayout() {
               refresh={refresh}
             ></StudyBubble>
           ) : (
-            <HourlyView
-              activeStudyBubbleCallback={updateActiveStudyBubbleId}
-            ></HourlyView>
+              <DateOverlay
+                activeStudyBubbleCallback={updateActiveStudyBubbleId}
+                selectedDate={selectedDate}
+              ></DateOverlay>
           )}
         </Section4>
         <Section3>

@@ -194,6 +194,35 @@ def decrement_cardnum(StudyBubble_id):
         conn.close()
 
     return updated_StudyBubble
+
+def get_all_study_bubbles_in_date(date):
+    StudyBubbles = []
+    print(date)
+    try:
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM StudyBubble WHERE date = ?", (date,))
+        rows = cur.fetchall()
+
+        # convert row objects to dictionary
+        for i in rows:
+            StudyBubble = {}
+            StudyBubble["id"] = i["id"]
+            StudyBubble['color'] = i['color']
+            StudyBubble['title'] = i['title']
+            StudyBubble['location'] = i['location']
+            StudyBubble['date'] = i['date']
+            StudyBubble['starts'] = i['starts']
+            StudyBubble['ends'] = i['ends']
+            StudyBubble['summary'] = i['summary']
+            StudyBubble['card_num'] = i['card_num']
+            StudyBubbles.append(StudyBubble)
+
+    except:
+        StudyBubbles = []
+
+    return StudyBubbles
 # ------------------------------------------------------------------------------
 def insert_LCard(LCard):
     inserted_LCard = {}

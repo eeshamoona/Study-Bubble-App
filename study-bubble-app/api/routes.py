@@ -29,6 +29,11 @@ def api_update_StudyBubble():
 def api_delete_StudyBubble(StudyBubble_id):
     return jsonify(db_worker.delete_StudyBubble(StudyBubble_id))
 
+@app.route('/api/StudyBubbles/date/<StudyBubble_date>/', methods=['GET'])
+def api_get_StudyBubble_in_date(StudyBubble_date):
+    print(StudyBubble_date)
+    return jsonify(db_worker.get_all_study_bubbles_in_date(StudyBubble_date))
+
 # ---------------------------------------------------------------------
 @app.route('/api/LCards/', methods=['GET'])
 def api_get_LCards():

@@ -77,6 +77,7 @@ export default function LearningCard(props) {
       </Section1>
       <Section1>
         <StyledTextarea
+          dir="ltr"
           type="textarea"
           value={backText}
           onChange={updateBackText}

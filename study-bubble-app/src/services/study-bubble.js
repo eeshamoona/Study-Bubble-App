@@ -2,6 +2,7 @@ import {apiGet, apiPost, apiDelete} from './api';
 
 const STUDYBUBBLE_ENDPOINT = 'StudyBubbles';
 const STUDYBUBBLE_ADD_ENDPOINT = 'StudyBubbles/add';
+const STUDYBUBBLE_DATE = 'StudyBubbles/date';
 
 
 function getAllStudyBubbles() {
@@ -18,9 +19,14 @@ function addStudyBubble(color, title, location, date, starts, ends, summary, car
   }).then((response)=> response.body);
 }
 
+function getStudyBubbleWithDate(date){
+  console.log(date);
+  return apiGet(STUDYBUBBLE_DATE, date);
+}
 
 export {
   getAllStudyBubbles, 
   getStudyBubble, 
-  addStudyBubble
+  addStudyBubble,
+  getStudyBubbleWithDate
 }

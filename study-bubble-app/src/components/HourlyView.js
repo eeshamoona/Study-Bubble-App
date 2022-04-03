@@ -1,5 +1,6 @@
-import * as React from "react";
+import React, {useState, useEffect} from "react";
 import styled from "styled-components";
+import {getStudyBubbleWithDate} from "../services/study-bubble";
 
 const padding = "3em";
 const margin = "2em";
@@ -69,6 +70,6 @@ const getHourLines = () => {
   );
   return <Section>{hours}</Section>;
 };
-export default function HourlyView() {
+export default function HourlyView(props) {
   return getHourLines();
 }
