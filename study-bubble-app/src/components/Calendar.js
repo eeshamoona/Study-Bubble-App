@@ -25,7 +25,7 @@ export default function Calendar(props) {
     const weekDays = [];
     for (let day = 0; day < 7; day++) {
       weekDays.push(
-        <div className="day weekNames">
+        <div key={day} className="day weekNames">
           {format(addDays(weekStartDate, day), "E")}
         </div>
       );

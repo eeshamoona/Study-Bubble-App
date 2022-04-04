@@ -24,7 +24,7 @@ const HourLine = styled.div`
   }
 `;
 
-const Text1 = styled.text`
+const Text1 = styled.p`
   margin-top: -10px;
   text-align: left;
   letter-spacing: 0px;

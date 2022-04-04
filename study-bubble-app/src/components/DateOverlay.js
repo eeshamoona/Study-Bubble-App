@@ -23,7 +23,6 @@ export default function DateOverlay(props) {
   const [studyBubbles, setStudyBubbles] = useState([]);
 
   useEffect(() => {
-    console.log(format(props.selectedDate, "MMddyyyy"));
     getStudyBubbleWithDate(format(props.selectedDate, "MMddyyyy")).then(
       (response) => {
         setStudyBubbles(response);
@@ -82,7 +81,7 @@ export default function DateOverlay(props) {
   }
 
   return (
-    <divOuter class="outer">
+    <div className="outer">
       {studyBubbles.map((studybubble) => {
         const topPosition = getStartPosition(studybubble["starts"]);
         const heightDifference = getHeightDifference(
@@ -93,7 +92,7 @@ export default function DateOverlay(props) {
           <div
           onClick={handleClick(studybubble['id'])}
             style={{ top: `${topPosition}px` }}
-            class="below"
+            className="below"
           >
             <DateObject
               style={{ height: `${heightDifference}px` }}
@@ -104,9 +103,9 @@ export default function DateOverlay(props) {
           </div>
         );
       })}
-      <div class="top">
+      <div className="top">
         <HourlyView></HourlyView>
       </div>
-    </divOuter>
+    </div>
   );
 }

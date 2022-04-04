@@ -38,13 +38,15 @@ const AddButton = styled.button`
   font-size: 60px;
 `;
 
-const Text1 = styled.text`
+const Text1 = styled.h3`
   font-size: 35px;
   font-weight: lighter;
+  margin:0px;
 `;
-const Text2 = styled.text`
+const Text2 = styled.h3`
   font-size: 24px;
   font-weight: normal;
+  margin:0px;
 `;
 
 export default function MiddleHeader(props) {

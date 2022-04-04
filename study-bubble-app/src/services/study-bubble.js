@@ -20,7 +20,6 @@ function addStudyBubble(color, title, location, date, starts, ends, summary, car
 }
 
 function getStudyBubbleWithDate(date){
-  console.log(date);
   return apiGet(STUDYBUBBLE_DATE, date);
 }
 
