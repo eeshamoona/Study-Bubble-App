@@ -19,6 +19,12 @@ const DateObject = styled.div`
   box-shadow: 0px 3px 6px #00000029;
 `;
 
+const HourLine = styled.div`
+  border-top: 2px solid red;
+  margin: 0px 15px;
+  height: 0px;
+`;
+
 export default function DateOverlay(props) {
   const [studyBubbles, setStudyBubbles] = useState([]);
 
@@ -30,67 +36,86 @@ export default function DateOverlay(props) {
     );
   }, [props.selectedDate]);
 
-  const getStartPosition = (textTime) => {
-    const splitStrings = textTime.split(":");
-    const initialHour = parseInt(splitStrings[0]);
-    const minutes = parseInt(splitStrings[1].split(" ")[0]);
-    const AMPM = splitStrings[1].split(" ")[1];
-
-    var position = 0; //This means we start at 1pm
-
-    if (AMPM == "AM") {
-      const temp = 12 - initialHour + 1;
-      position = -48 * (temp);
-    } else {
-      const temp = initialHour - 1;
-      position = 48 * (temp + 2);
-    }
-
-    return position;
-  };
-
   const getHeightDifference = (textStart, textEnd) => {
     const splitStringsStart = textStart.split(":");
-    const initialHourStart = parseInt(splitStringsStart[0]);
+    var initialHourStart = parseInt(splitStringsStart[0]);
     const minutesStart = parseInt(splitStringsStart[1].split(" ")[0]);
     const AMPMStart = splitStringsStart[1].split(" ")[1];
 
     const splitStringsEnd = textEnd.split(":");
-    const initialHourEnd = parseInt(splitStringsEnd[0]);
+    var initialHourEnd = parseInt(splitStringsEnd[0]);
     const minutesEnd = parseInt(splitStringsEnd[1].split(" ")[0]);
     const AMPMEnd = splitStringsEnd[1].split(" ")[1];
 
-    var temp = 0;
-
-    if (AMPMStart == "AM") {
-      if (AMPMEnd == "AM") {
-        temp = initialHourEnd - initialHourStart;
-      } else {
-        const temp1 = 12 - initialHourStart;
-        const temp2 = initialHourEnd + 1;
-        temp = temp1 + temp2;
-      }
-    } else {
-      temp = initialHourEnd - initialHourStart;
+    if (AMPMStart == "PM") {
+      initialHourStart = initialHourStart + 12;
     }
-    return 48 * temp;
+    if (AMPMEnd == "PM") {
+      initialHourEnd = initialHourEnd + 12;
+    }
+
+    const startDateTime = new Date(
+      `${format(
+        props.selectedDate,
+        "MMMM dd, yyyy"
+      )} ${initialHourStart}:${minutesStart}:00`
+    );
+    const endDateTime = new Date(
+      `${format(
+        props.selectedDate,
+        "MMMM dd, yyyy"
+      )} ${initialHourEnd}:${minutesEnd}:00`
+    );
+
+    // replace top 60 with lineheight variable
+    return diff_minutes(startDateTime, endDateTime);
+  };
+
+  const diff_minutes = (dt2, dt1) => {
+    var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+    diff /= 60;
+    return Math.round(diff);
+  };
+
+  const calculateOffsetForCurrentTime = () => {
+    var currentdate = new Date();
+    var d1 = new Date(
+      `${format(
+        props.selectedDate,
+        "MMMM dd, yyyy"
+      )} ${currentdate.getHours()}:${currentdate.getMinutes()}:00`
+    );
+    const d2 = new Date(
+      `${format(props.selectedDate, "MMMM dd, yyyy")} 13:00:00`
+    );
+    return diff_minutes(d1, d2);
   };
 
   const handleClick = (id) => {
+    console.log("HERE" + id);
     props.activeStudyBubbleCallback(id);
-  }
+  };
 
   return (
     <div className="outer">
       {studyBubbles.map((studybubble) => {
-        const topPosition = getStartPosition(studybubble["starts"]);
-        const heightDifference = getHeightDifference(
+        const heightDifference =
+          Math.abs(
+            getHeightDifference(studybubble["starts"], studybubble["ends"])
+          ) *
+          (60 / 60);
+        const offsetPixel = getHeightDifference(
           studybubble["starts"],
-          studybubble["ends"]
+          "1:00 PM"
         );
+        const topPosition =
+          offsetPixel -
+          (getHeightDifference(studybubble["starts"], studybubble["ends"]) *
+            (60.75 / 60)) /
+            2;
         return (
           <div
-          onClick={handleClick(studybubble['id'])}
+            onClick={() => handleClick(studybubble["id"])}
             style={{ top: `${topPosition}px` }}
             className="below"
           >
@@ -105,6 +130,12 @@ export default function DateOverlay(props) {
       })}
       <div className="top">
         <HourlyView></HourlyView>
+      </div>
+      <div
+        style={{ top: `${calculateOffsetForCurrentTime()}px` }}
+        className="below"
+      >
+        <HourLine></HourLine>
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ const HourLine = styled.div`
   border-top: 1px solid #707070;
   margin-left: 50px;
   margin-left: 10px;
-  height: 48px;
+  height: 60px;
   flex: 1;
 
   &:hover {
