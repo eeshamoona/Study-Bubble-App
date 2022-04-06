@@ -16,7 +16,7 @@ const Section1 = styled.section`
 const Section2 = styled.section`
   color: #f6f5fc;
   align-items: center;
-  background: ${(props) => props.color};
+  background: #aaa1fc;
   border-radius: 17px;
   display: flex;
   flex-direction: column;
@@ -25,7 +25,7 @@ const Section2 = styled.section`
   justify-content: center;
 `;
 
-export default function SummarySection(props) {
+export default function AddStudyBubble() {
   const [notesText, setNotesText] = useState("");
   const updateNotesText = (event) => {
     setNotesText(event.target.value);
@@ -33,7 +33,7 @@ export default function SummarySection(props) {
 
   return (
     <Section1>
-      <Section2 color={props.color}>Summary Will Go Here</Section2>
+      <Section2>Add Event Section Will Go Here</Section2>
     </Section1>
   );
 }

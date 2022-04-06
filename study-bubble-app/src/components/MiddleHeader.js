@@ -1,22 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import {
-  format,
-  startOfWeek,
-  addDays,
-  startOfMonth,
-  endOfMonth,
-  endOfWeek,
-  isSameMonth,
-  isSameDay,
-  subMonths,
-  addMonths,
-} from "date-fns";
-
+import { format } from "date-fns";
 import { addLCard } from "../services/learning-card";
-
-const borderRadius = "7px";
-const margin = "2em";
 
 const Section1 = styled.section`
   background: transparent;
@@ -41,20 +26,20 @@ const AddButton = styled.button`
 const Text1 = styled.h3`
   font-size: 35px;
   font-weight: lighter;
-  margin:0px;
+  margin: 0px;
 `;
 const Text2 = styled.h3`
   font-size: 24px;
   font-weight: normal;
-  margin:0px;
+  margin: 0px;
 `;
 
 export default function MiddleHeader(props) {
   const handleOnClick = () => {
     if (props.studyBubbleId) {
       addLCard("", "", props.studyBubbleId);
-      props.refreshCallback()
     }
+    props.refreshCallback();
   };
   return (
     <Section1>

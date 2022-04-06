@@ -7,6 +7,8 @@ import StudyBubble from "./StudyBubble";
 import StudySideBar from "./StudySideBar";
 import SummarySection from "./SummarySection";
 import DateOverlay from "./DateOverlay";
+import AddStudyBubble from "./AddStudyBubble";
+import { getStudyBubble } from "../services/study-bubble";
 
 const borderRadius = "17px";
 const margin = "2em";
@@ -73,15 +75,28 @@ export default function MainLayout() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isStudyBubbleView, setIsStudyBubbleView] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const [addEvent, setAddEvent] = useState(false);
+
   const updateIstStudyBubbleView = () => {
     setIsStudyBubbleView(!isStudyBubbleView);
   };
-  const [activeStudyBubbleID, setActiveStudyBubbleID] = useState(1);
+  const updateAddEvent = () => {
+    setAddEvent(!addEvent);
+  };
+  const [activeStudyBubbleID, setActiveStudyBubbleID] = useState(null);
+  const [studyBubble, setStudyBubble] = useState({});
+
   const updateActiveStudyBubbleId = (id) => {
+    setAddEvent(false);
     setActiveStudyBubbleID(id);
+    getStudyBubble(id).then((response) => setStudyBubble(response));
   };
 
   const refreshCallback = () => {
+    //This means that they have clicked the + in the calendar page
+    if (!isStudyBubbleView) {
+      updateAddEvent();
+    }
     setRefresh(!refresh);
   };
 
@@ -109,10 +124,10 @@ export default function MainLayout() {
               refresh={refresh}
             ></StudyBubble>
           ) : (
-              <DateOverlay
-                activeStudyBubbleCallback={updateActiveStudyBubbleId}
-                selectedDate={selectedDate}
-              ></DateOverlay>
+            <DateOverlay
+              activeStudyBubbleCallback={updateActiveStudyBubbleId}
+              selectedDate={selectedDate}
+            ></DateOverlay>
           )}
         </Section4>
         <Section3>
@@ -120,12 +135,23 @@ export default function MainLayout() {
             <Calendar dateCallback={setSelectedDate}></Calendar>
           </div>
           <Section5>
-            <SummarySection></SummarySection>
-            <Button onClick={updateIstStudyBubbleView}>
-              {isStudyBubbleView
-                ? "Close the Study Bubble"
-                : "Open this Study Bubble"}
-            </Button>
+            {addEvent ? (
+              <>
+                <AddStudyBubble></AddStudyBubble>
+                <Button>Add Study Bubble</Button>
+              </>
+            ) : activeStudyBubbleID ? (
+              <>
+                <SummarySection color={studyBubble["color"]}></SummarySection>
+                <Button onClick={updateIstStudyBubbleView}>
+                  {isStudyBubbleView
+                    ? "Close the Study Bubble"
+                    : "Open this Study Bubble"}
+                </Button>
+              </>
+            ) : (
+              <div></div>
+            )}
           </Section5>
         </Section3>
       </Section2>

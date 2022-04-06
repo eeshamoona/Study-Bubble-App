@@ -67,7 +67,6 @@ export default function DateOverlay(props) {
       )} ${initialHourEnd}:${minutesEnd}:00`
     );
 
-    // replace top 60 with lineheight variable
     return diff_minutes(startDateTime, endDateTime);
   };
 
