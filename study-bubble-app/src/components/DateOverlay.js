@@ -17,12 +17,39 @@ const DateObject = styled.div`
   background: ${(props) => props.color};
   border-radius: 17px;
   box-shadow: 0px 3px 6px #00000029;
+  flex-direction: column;
+  padding: 10px;
+  justify-content: space-between;
+`;
+
+const Container = styled.div`
+  display: flex;
+  background: transparent;
+  flex-direction: column;
 `;
 
 const HourLine = styled.div`
   border-top: 2px solid red;
   margin: 0px 15px;
   height: 0px;
+`;
+
+const TitleText = styled.text`
+  font-size: 40px;
+`;
+
+const LocationText = styled.text`
+  font-size: 18px;
+`;
+
+const NumberText = styled.text`
+  font-size: 40px;
+  text-align: right;
+`;
+
+const SubText = styled.text`
+  font-size: 18px;
+  text-align: right;
 `;
 
 export default function DateOverlay(props) {
@@ -66,7 +93,6 @@ export default function DateOverlay(props) {
         "MMMM dd, yyyy"
       )} ${initialHourEnd}:${minutesEnd}:00`
     );
-
     return diff_minutes(startDateTime, endDateTime);
   };
 
@@ -87,11 +113,11 @@ export default function DateOverlay(props) {
     const d2 = new Date(
       `${format(props.selectedDate, "MMMM dd, yyyy")} 13:00:00`
     );
+    console.log(diff_minutes(d1, d2));
     return diff_minutes(d1, d2);
   };
 
   const handleClick = (id) => {
-    console.log("HERE" + id);
     props.activeStudyBubbleCallback(id);
   };
 
@@ -110,7 +136,8 @@ export default function DateOverlay(props) {
         const topPosition =
           offsetPixel -
           (getHeightDifference(studybubble["starts"], studybubble["ends"]) *
-            (60.75 / 60)) /
+            (60 / 60) -
+            5) /
             2;
         return (
           <div
@@ -122,7 +149,14 @@ export default function DateOverlay(props) {
               style={{ height: `${heightDifference}px` }}
               color={studybubble["color"]}
             >
-              {studybubble["title"]}
+              <Container>
+                <TitleText>{studybubble["title"]}</TitleText>
+                <LocationText>{studybubble["location"]}</LocationText>
+              </Container>
+              <Container>
+                <NumberText>{studybubble["card_num"]}</NumberText>
+                <SubText>Learning Cards</SubText>
+              </Container>
             </DateObject>
           </div>
         );
