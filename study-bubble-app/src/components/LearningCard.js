@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import TaskBubble from "./LearningCard";
 import { updateLCard } from "../services/learning-card";
-
-const padding = "3em";
-const margin = "2em";
 
 const Section1 = styled.section`
   background: white;

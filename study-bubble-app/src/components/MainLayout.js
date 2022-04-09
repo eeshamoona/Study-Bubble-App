@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Calendar from "./Calendar";
-import HourlyView from "./HourlyView";
 import MiddleHeader from "./MiddleHeader";
 import StudyBubble from "./StudyBubble";
 import StudySideBar from "./StudySideBar";
@@ -12,7 +11,6 @@ import { getStudyBubble } from "../services/study-bubble";
 import SummaryAdd from "./SummaryAdd";
 
 const borderRadius = "17px";
-const margin = "2em";
 
 const Section1 = styled.section`
   border-radius: ${borderRadius};
@@ -135,7 +133,7 @@ export default function MainLayout() {
     <Section1>
       {isStudyBubbleView ? (
         <StudySideBar
-          studyBubbleId={activeStudyBubbleID}
+          studyBubble={currStudyBubble}
           refresh={refresh}
         ></StudySideBar>
       ) : (

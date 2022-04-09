@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import TaskBubble from "./LearningCard";
-import LearningCard from "./LearningCard";
-
-const padding = "3em";
-const margin = "2em";
 
 const Section1 = styled.section`
   background: transparent;
@@ -73,11 +68,7 @@ const ListItem = styled.li`
 `;
 
 export default function TLDRSection(props) {
-  const [notesText, setNotesText] = useState("");
   const [tldrs, setTldrs] = useState([]);
-  const updateNotesText = (event) => {
-    setNotesText(event.target.value);
-  };
 
   useEffect(() => {
     console.log("OOF");

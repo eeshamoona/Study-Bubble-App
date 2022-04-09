@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import TaskBubble from "./LearningCard";
-import LearningCard from "./LearningCard";
-import { set } from "date-fns";
 import { updateSummary } from "../services/study-bubble";
-
-const padding = "3em";
-const margin = "2em";
 
 const Section1 = styled.section`
   background: transparent;
@@ -68,21 +62,6 @@ const EnterButton = styled.button`
   font-size: 20px;
 `;
 
-const NumberText = styled.text`
-  font-size: 40px;
-`;
-
-const Container = styled.div`
-  display: flex;
-  background: transparent;
-  flex-direction: column;
-  text-align: center;
-`;
-
-const SubText = styled.text`
-  font-size: 18px;
-`;
-
 const TLDRText = styled.text`
   font-size: 24px;
 `;
@@ -112,14 +91,8 @@ const ListItem = styled.li`
 `;
 
 export default function SummaryAdd(props) {
-  const [notesText, setNotesText] = useState("");
-  const [refresh, setRefresh] = useState(true);
   const [value, setValue] = useState("");
   const [tldrs, setTldrs] = useState([]);
-
-  const updateNotesText = (event) => {
-    setNotesText(event.target.value);
-  };
 
   useEffect(() => {
     if (props.studyBubble && props.studyBubble["summary"]) {

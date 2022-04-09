@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import TaskBubble from "./LearningCard";
-import LearningCard from "./LearningCard";
 import { getStudyBubble } from "../services/study-bubble";
-
-const padding = "3em";
-const margin = "2em";
 
 const Section1 = styled.section`
   background: transparent;
@@ -15,9 +10,8 @@ const Section1 = styled.section`
 `;
 
 const Section2 = styled.section`
-  color: #f6f5fc;
   align-items: center;
-  background: #aaa1fc;
+  background: ${(props) => props.color};
   border-radius: 17px;
   margin-top: 30px;
   margin-left: 25px;
@@ -48,8 +42,8 @@ const Section4 = styled.div`
 `;
 
 const Button = styled.button`
-  color: #f6f5fc;
-  background: #aaa1fc;
+  background: ${(props) => props.color};
+  color: #707070;
   border-radius: 50px;
   width: -webkit-fill-available;
   height: 40px;
@@ -95,15 +89,14 @@ export default function StudySideBar(props) {
     setNotesText("");
   };
   useEffect(() => {
-    if (props.studyBubbleId) {
-      getStudyBubble(props.studyBubbleId).then((response) =>
-        setCardNum(response["card_num"])
-      );
+    if (props.studyBubble) {
+      setCardNum(props.studyBubble["card_num"]);
     }
-  }, [props.refresh]);
+  }, [props.refresh, props.studyBubble]);
+
   return (
     <Section1>
-      <Section2>
+      <Section2 color={props.studyBubble["color"]}>
         <Section3>
           <TitleText>{cardNum}</TitleText>
           <SubText>Learning Cards</SubText>
@@ -120,7 +113,9 @@ export default function StudySideBar(props) {
           value={notesText}
           onChange={updateNotesText}
         ></StyledTextarea>
-        <Button onClick={eraseNotes}>Clear</Button>
+        <Button color={props.studyBubble["color"]} onClick={eraseNotes}>
+          Clear
+        </Button>
       </Section4>
     </Section1>
   );

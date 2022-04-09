@@ -1,9 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { getStudyBubbleWithDate } from "../services/study-bubble";
-
-const padding = "3em";
-const margin = "2em";
 
 const Section = styled.section`
   background: transparent;
