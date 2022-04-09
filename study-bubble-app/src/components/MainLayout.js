@@ -5,7 +5,7 @@ import HourlyView from "./HourlyView";
 import MiddleHeader from "./MiddleHeader";
 import StudyBubble from "./StudyBubble";
 import StudySideBar from "./StudySideBar";
-import SummarySection from "./SummarySection";
+import TLDRSection from "./TLDRSection";
 import DateOverlay from "./DateOverlay";
 import AddStudyBubble from "./AddStudyBubble";
 import { getStudyBubble } from "../services/study-bubble";
@@ -84,12 +84,12 @@ export default function MainLayout() {
     setAddEvent(!addEvent);
   };
   const [activeStudyBubbleID, setActiveStudyBubbleID] = useState(null);
-  const [studyBubble, setStudyBubble] = useState({});
+  const [currStudyBubble, setCurrStudyBubble] = useState({});
 
   const updateActiveStudyBubbleId = (id) => {
     setAddEvent(false);
     setActiveStudyBubbleID(id);
-    getStudyBubble(id).then((response) => setStudyBubble(response));
+    getStudyBubble(id).then((response) => setCurrStudyBubble(response));
   };
 
   const refreshCallback = () => {
@@ -131,7 +131,7 @@ export default function MainLayout() {
           )}
         </Section4>
         <Section3>
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: 0 }}>
             <Calendar dateCallback={setSelectedDate}></Calendar>
           </div>
           <Section5>
@@ -142,7 +142,10 @@ export default function MainLayout() {
               </>
             ) : activeStudyBubbleID ? (
               <>
-                <SummarySection color={studyBubble["color"]}></SummarySection>
+                <TLDRSection
+                  color={currStudyBubble["color"]}
+                  studyBubble={currStudyBubble}
+                ></TLDRSection>
                 <Button onClick={updateIstStudyBubbleView}>
                   {isStudyBubbleView
                     ? "Close the Study Bubble"
