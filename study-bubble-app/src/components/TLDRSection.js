@@ -8,14 +8,14 @@ const margin = "2em";
 
 const Section1 = styled.section`
   background: transparent;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  max-height: 248px;
 `;
 
 const Section2 = styled.section`
-  align-items: center;
   background: ${(props) => props.color};
+  align-items: center;
   border-radius: 17px;
   display: flex;
   flex-direction: column;
@@ -25,19 +25,12 @@ const Section2 = styled.section`
 `;
 
 const Section3 = styled.section`
-  margin-top: 20px;
   align-items: center;
   border-radius: 17px;
-  display: grid;
-  flex-direction: column;
-  height: 100%;
+  overflow-y: scroll;
+  max-width: 100%;
 `;
-const Section4 = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-`;
+
 const TitleText = styled.text`
   font-size: 24px;
   text-align: center;
@@ -48,33 +41,19 @@ const LocationText = styled.text`
   text-align: center;
 `;
 
-const NumberText = styled.text`
-  font-size: 40px;
-`;
-
-const Container = styled.div`
-  display: flex;
-  background: transparent;
-  flex-direction: column;
-  text-align: center;
-`;
-
-const SubText = styled.text`
-  font-size: 18px;
-`;
-
 const TLDRText = styled.text`
   font-size: 18px;
   margin-left: 10px;
-  margin-top: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 const SummaryText = styled.text`
   background: white;
+  width: auto;
   border-radius: 30px;
   padding: 10px;
   text-align: center;
-  width: fit-content;
   margin: 5px;
   font-size: 11px;
   box-shadow: 0px 3px 6px #00000029;
@@ -85,7 +64,7 @@ const List = styled.ul`
   display: inline-flex;
   margin: 0px;
   padding: 0px;
-  height: 100%;
+  flex-wrap: wrap;
 `;
 
 const ListItem = styled.li`
@@ -127,16 +106,6 @@ export default function TLDRSection(props) {
           </List>
         </Section3>
       </>
-      <Section4>
-        <Container>
-          <NumberText>{props.studyBubble["card_num"]}</NumberText>
-          <SubText>Learning Cards</SubText>
-        </Container>
-        <Container>
-          <NumberText>0</NumberText>
-          <SubText>Minutes Studied</SubText>
-        </Container>
-      </Section4>
     </Section1>
   );
 }

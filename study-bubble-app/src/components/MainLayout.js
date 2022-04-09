@@ -9,6 +9,7 @@ import TLDRSection from "./TLDRSection";
 import DateOverlay from "./DateOverlay";
 import AddStudyBubble from "./AddStudyBubble";
 import { getStudyBubble } from "../services/study-bubble";
+import SummaryAdd from "./SummaryAdd";
 
 const borderRadius = "17px";
 const margin = "2em";
@@ -53,11 +54,10 @@ const Section4 = styled.div`
 `;
 
 const Section5 = styled.section`
-  flex: 1 1 0%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-top: 20px;
 `;
 
 const Button = styled.button`
@@ -69,6 +69,33 @@ const Button = styled.button`
   border: none;
   box-shadow: 0px 3px 6px #00000029;
   cursor: pointer;
+`;
+
+const NumberText = styled.text`
+  font-size: 30px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  background: transparent;
+  flex-direction: column;
+  text-align: center;
+`;
+
+const SubText = styled.text`
+  font-size: 14px;
+`;
+
+const Section6 = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin: 10px 0px;
+`;
+
+const Section7 = styled.div`
+  background: transparent;
 `;
 
 export default function MainLayout() {
@@ -96,6 +123,10 @@ export default function MainLayout() {
     //This means that they have clicked the + in the calendar page
     if (!isStudyBubbleView) {
       updateAddEvent();
+    }
+    //This is called when summary has been added to
+    else {
+      updateActiveStudyBubbleId(currStudyBubble["id"]);
     }
     setRefresh(!refresh);
   };
@@ -131,7 +162,7 @@ export default function MainLayout() {
           )}
         </Section4>
         <Section3>
-          <div style={{ flex: 0 }}>
+          <div style={{ flex: 1 }}>
             <Calendar dateCallback={setSelectedDate}></Calendar>
           </div>
           <Section5>
@@ -142,15 +173,44 @@ export default function MainLayout() {
               </>
             ) : activeStudyBubbleID ? (
               <>
-                <TLDRSection
-                  color={currStudyBubble["color"]}
-                  studyBubble={currStudyBubble}
-                ></TLDRSection>
-                <Button onClick={updateIstStudyBubbleView}>
-                  {isStudyBubbleView
-                    ? "Close the Study Bubble"
-                    : "Open this Study Bubble"}
-                </Button>
+                {isStudyBubbleView ? (
+                  <>
+                    <SummaryAdd
+                      color={currStudyBubble["color"]}
+                      studyBubble={currStudyBubble}
+                      refreshCallback={refreshCallback}
+                    ></SummaryAdd>
+                    <Button onClick={updateIstStudyBubbleView}>
+                      {isStudyBubbleView
+                        ? "Close the Study Bubble"
+                        : "Open this Study Bubble"}
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <TLDRSection
+                      color={currStudyBubble["color"]}
+                      studyBubble={currStudyBubble}
+                    ></TLDRSection>
+                    <Section7>
+                      <Section6>
+                        <Container>
+                          <NumberText>{currStudyBubble["card_num"]}</NumberText>
+                          <SubText>Learning Cards</SubText>
+                        </Container>
+                        <Container>
+                          <NumberText>0</NumberText>
+                          <SubText>Minutes Studied</SubText>
+                        </Container>
+                      </Section6>
+                      <Button onClick={updateIstStudyBubbleView}>
+                        {isStudyBubbleView
+                          ? "Close the Study Bubble"
+                          : "Open this Study Bubble"}
+                      </Button>
+                    </Section7>
+                  </>
+                )}
               </>
             ) : (
               <div></div>
