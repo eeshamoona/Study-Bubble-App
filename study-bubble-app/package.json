@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "date-fn": "^0.0.2",
     "react": "^16.14.0",
+    "react-color": "^2.19.3",
     "react-dom": "^16.14.0",
     "react-icons": "^4.3.1",
     "react-is": "^16.13.1",
