@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { CirclePicker } from "react-color";
 import Switch from "react-switch";
 import { format } from "date-fns";
+import { addStudyBubble } from "../services/study-bubble";
 
 const Section1 = styled.section`
   background: transparent;
@@ -156,7 +157,7 @@ const AMDiv = styled.div`
   align-items: center;
   height: 100%;
   background: rgba(255, 255, 255, 0.5);
-    border-radius: 17px;
+  border-radius: 17px;
   color: #707070;
   font-size: 14px;
   box-shadow: 0px 3px 6px #00000029;
@@ -172,6 +173,17 @@ const PMDiv = styled.div`
   color: #707070;
   font-size: 14px;
   box-shadow: 0px 3px 6px #00000029;
+`;
+
+const Button = styled.button`
+  background: #f6f5fc;
+  border-radius: 50px;
+  width: -webkit-fill-available;
+  height: 40px;
+  font-size: 24px;
+  border: none;
+  box-shadow: 0px 3px 6px #00000029;
+  cursor: pointer;
 `;
 
 export default function AddStudyBubble(props) {
@@ -224,133 +236,183 @@ export default function AddStudyBubble(props) {
     const val = parseInt(event.target.value);
     setEndMinute(event.target.value);
   };
-  return (
-    <Section1>
-      <Section2 color={selectedColor}>
-        <TopHalf>
-          <VStack>
-            <TextInput
-              required
-              type="text"
-              placeholder="Title"
-              id="title"
-              value={title}
-              onChange={updateTitle}
-            />
-            <TextInput
-              required
-              type="text"
-              placeholder="Location"
-              id="location"
-              value={location}
-              onChange={updateLocation}
-            />
-          </VStack>
 
-          {displayColorPicker ? (
-            <Cover onClick={handleClose}>
-              <CirclePicker
-                width="126px"
-                colors={[
-                  "#FFCBA8",
-                  "#FFE8A8",
-                  "#BAF8B7",
-                  "#BEE9FF",
-                  "#FFC4DA",
-                  "#CBC6F7",
-                  "#A9B5D9",
-                  "#F2DFEB",
-                  "#D1EBD8",
-                ]}
-                triangle="hide"
-                color={selectedColor}
-                onChange={handleChange}
+  const submit = () => {
+    if (
+      selectedColor &&
+      title &&
+      location &&
+      props.selectedDate &&
+      startHour.length > 0 &&
+      endHour.length > 0
+    ) {
+      var startTime = "";
+      var endTime = "";
+
+      if (startPM) {
+        startTime = startHour + ":" + startMinute + " PM";
+      } else {
+        startTime = startHour + ":" + startMinute + " AM";
+      }
+      if (endPM) {
+        endTime = endHour + ":" + endMinute + " PM";
+      } else {
+        endTime = endHour + ":" + endMinute + " AM";
+      }
+
+      console.log(
+        selectedColor,
+        title,
+        location,
+        format(props.selectedDate, "MMddyyyy"),
+        startTime,
+        endTime,
+        "",
+        0
+      );
+      addStudyBubble(
+        selectedColor,
+        title,
+        location,
+        format(props.selectedDate, "MMddyyyy"),
+        startTime,
+        endTime,
+        "",
+        0
+      ).then((response) => props.refreshCallback(response["id"]));
+    }
+  };
+
+  return (
+    <>
+      <Section1>
+        <Section2 color={selectedColor}>
+          <TopHalf>
+            <VStack>
+              <TextInput
+                required
+                type="text"
+                placeholder="Title"
+                id="title"
+                value={title}
+                onChange={updateTitle}
               />
-            </Cover>
-          ) : (
-            <SwatchDiv onClick={handleClick}>
-              <ColorDiv color={selectedColor}></ColorDiv>
-            </SwatchDiv>
-          )}
-        </TopHalf>
-        <BottomHalf>
-          <DateText>
-            {format(props.selectedDate, "EEEE • MMMM dd, yyyy")}
-          </DateText>
-          <NumberHStack>
-            <NumberVStack>
-              <LabelText>Starts:</LabelText>
-              <HStack>
-                <NumberInput
-                  placeholder="HH"
-                  id="startHour"
-                  value={startHour}
-                  onChange={updateStartHour}
-                />
-                <ColonText>:</ColonText>
-                <NumberInput
-                  placeholder="MM"
-                  id="startMinute"
-                  value={startMinute}
-                  onChange={updateStartMinute}
-                />
-              </HStack>
-              <Switch
-                checked={startPM}
-                onChange={() => setStartPM(!startPM)}
-                handleDiameter={30}
-                offColor="#74d9ff"
-                onColor="#35567D"
-                height={40}
-                width={100}
-                borderRadius={40}
-                uncheckedIcon={<div />}
-                checkedIcon={<div />}
-                uncheckedHandleIcon={<AMDiv>AM</AMDiv>}
-                checkedHandleIcon={<PMDiv>PM</PMDiv>}
-                id="small-radius-switch"
+              <TextInput
+                required
+                type="text"
+                placeholder="Location"
+                id="location"
+                value={location}
+                onChange={updateLocation}
               />
-            </NumberVStack>
-            <NumberVStack>
-              <LabelText>[Total Time]</LabelText>
-            </NumberVStack>
-            <NumberVStack>
-              <LabelText>Ends:</LabelText>
-              <HStack>
-                <NumberInput
-                  placeholder="HH"
-                  id="endHour"
-                  width="20px"
-                  value={endHour}
-                  onChange={updateEndHour}
+            </VStack>
+
+            {displayColorPicker ? (
+              <Cover onClick={handleClose}>
+                <CirclePicker
+                  width="126px"
+                  colors={[
+                    "#FFCBA8",
+                    "#FFE8A8",
+                    "#BAF8B7",
+                    "#BEE9FF",
+                    "#FFC4DA",
+                    "#CBC6F7",
+                    "#A9B5D9",
+                    "#F2DFEB",
+                    "#D1EBD8",
+                  ]}
+                  triangle="hide"
+                  color={selectedColor}
+                  onChange={handleChange}
                 />
-                <ColonText>:</ColonText>
-                <NumberInput
-                  placeholder="MM"
-                  id="endMinute"
-                  value={endMinute}
-                  onChange={updateEndMinute}
+              </Cover>
+            ) : (
+              <SwatchDiv onClick={handleClick}>
+                <ColorDiv color={selectedColor}></ColorDiv>
+              </SwatchDiv>
+            )}
+          </TopHalf>
+          <BottomHalf>
+            <DateText>
+              {format(props.selectedDate, "EEEE • MMMM dd, yyyy")}
+            </DateText>
+            <NumberHStack>
+              <NumberVStack>
+                <LabelText>Starts:</LabelText>
+                <HStack>
+                  <NumberInput
+                    placeholder="HH"
+                    id="startHour"
+                    value={startHour}
+                    onChange={updateStartHour}
+                  />
+                  <ColonText>:</ColonText>
+                  <NumberInput
+                    placeholder="MM"
+                    id="startMinute"
+                    value={startMinute}
+                    onChange={updateStartMinute}
+                  />
+                </HStack>
+                <Switch
+                  checked={startPM}
+                  onChange={() => setStartPM(!startPM)}
+                  handleDiameter={30}
+                  offColor="#74d9ff"
+                  onColor="#35567D"
+                  height={40}
+                  width={100}
+                  borderRadius={40}
+                  uncheckedIcon={<div />}
+                  checkedIcon={<div />}
+                  uncheckedHandleIcon={<AMDiv>AM</AMDiv>}
+                  checkedHandleIcon={<PMDiv>PM</PMDiv>}
+                  id="small-radius-switch"
                 />
-              </HStack>
-              <Switch
-                checked={endPM}
-                onChange={() => setEndPM(!endPM)}
-                handleDiameter={30}
-                offColor="#74d9ff"
-                onColor="#35567D"
-                height={40}
-                width={100}
-                borderRadius={40}
-                uncheckedIcon={<div />}
-                checkedIcon={<div />}
-                uncheckedHandleIcon={<AMDiv>AM</AMDiv>}
-                checkedHandleIcon={<PMDiv>PM</PMDiv>}
-                id="small-radius-switch"
-              />
-            </NumberVStack>
-          </NumberHStack>
-        </BottomHalf>
-      </Section2>
-    </Section1>
+              </NumberVStack>
+              <NumberVStack>
+                <LabelText>[Total Time]</LabelText>
+              </NumberVStack>
+              <NumberVStack>
+                <LabelText>Ends:</LabelText>
+                <HStack>
+                  <NumberInput
+                    placeholder="HH"
+                    id="endHour"
+                    width="20px"
+                    value={endHour}
+                    onChange={updateEndHour}
+                  />
+                  <ColonText>:</ColonText>
+                  <NumberInput
+                    placeholder="MM"
+                    id="endMinute"
+                    value={endMinute}
+                    onChange={updateEndMinute}
+                  />
+                </HStack>
+                <Switch
+                  checked={endPM}
+                  onChange={() => setEndPM(!endPM)}
+                  handleDiameter={30}
+                  offColor="#74d9ff"
+                  onColor="#35567D"
+                  height={40}
+                  width={100}
+                  borderRadius={40}
+                  uncheckedIcon={<div />}
+                  checkedIcon={<div />}
+                  uncheckedHandleIcon={<AMDiv>AM</AMDiv>}
+                  checkedHandleIcon={<PMDiv>PM</PMDiv>}
+                  id="small-radius-switch"
+                />
+              </NumberVStack>
+            </NumberHStack>
+          </BottomHalf>
+        </Section2>
+      </Section1>
+      <Button onClick={submit}>Add Study Bubble</Button>
+    </>
   );
 }

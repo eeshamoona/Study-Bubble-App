@@ -115,8 +115,10 @@ export default function MainLayout() {
     setAddEvent(false);
     setActiveStudyBubbleID(id);
     getStudyBubble(id).then((response) => setCurrStudyBubble(response));
+    setRefresh(!refresh);
   };
 
+  //TODO: Fix these refresh bugs
   const refreshCallback = () => {
     //This means that they have clicked the + in the calendar page
     if (!isStudyBubbleView) {
@@ -165,10 +167,7 @@ export default function MainLayout() {
           </div>
           <Section5>
             {addEvent ? (
-              <>
-                <AddStudyBubble selectedDate={selectedDate}></AddStudyBubble>
-                <Button>Add Study Bubble</Button>
-              </>
+              <AddStudyBubble selectedDate={selectedDate} refreshCallback = {refreshCallback}></AddStudyBubble>
             ) : activeStudyBubbleID ? (
               <>
                 {isStudyBubbleView ? (
@@ -176,7 +175,7 @@ export default function MainLayout() {
                     <SummaryAdd
                       color={currStudyBubble["color"]}
                       studyBubble={currStudyBubble}
-                      refreshCallback={refreshCallback}
+                      refreshCallback={updateActiveStudyBubbleId}
                     ></SummaryAdd>
                     <Button onClick={updateIstStudyBubbleView}>
                       {isStudyBubbleView
