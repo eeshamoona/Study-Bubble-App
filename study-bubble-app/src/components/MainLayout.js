@@ -166,7 +166,7 @@ export default function MainLayout() {
           <Section5>
             {addEvent ? (
               <>
-                <AddStudyBubble></AddStudyBubble>
+                <AddStudyBubble selectedDate={selectedDate}></AddStudyBubble>
                 <Button>Add Study Bubble</Button>
               </>
             ) : activeStudyBubbleID ? (
