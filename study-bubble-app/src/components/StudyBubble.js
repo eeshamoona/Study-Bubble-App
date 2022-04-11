@@ -32,20 +32,17 @@ const LocationText = styled.text`
 
 export default function StudyBubble(props) {
   const [LCards, setLCards] = useState([]);
-  const [StudyBubble, setStudyBubble] = useState({});
 
   useEffect(() => {
-    getStudyBubble(props.studyBubbleId).then((response) =>
-      setStudyBubble(response)
-    );
-    getLCardsFromStudyBubble(props.studyBubbleId).then((response) =>
-      setLCards(response)
-    );
-  }, [props.refresh, props.studyBubbleId]);
+    getLCardsFromStudyBubble(props.studyBubble["id"]).then((response) => {
+      console.log(response);
+      setLCards(response);
+    });
+  }, [props.refresh, props.studyBubble]);
   return (
     <Section2>
-      <TitleText>{StudyBubble["title"]}</TitleText>
-      <LocationText>{StudyBubble["location"]}</LocationText>
+      <TitleText>{props.studyBubble["title"]}</TitleText>
+      <LocationText>{props.studyBubble["location"]}</LocationText>
       <Section1>
         {LCards.slice(0)
           .reverse()

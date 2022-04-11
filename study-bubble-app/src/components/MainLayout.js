@@ -120,14 +120,14 @@ export default function MainLayout() {
 
   //TODO: Fix these refresh bugs
   const addCallback = () => {
-    //If it is StudyBubbleView that means that we have just added an LCard
-    //need to refresh sideBar, studybubblePage
-
     //If it is not a StudyBubbleView that means we are going to add an evernt
     //need to turnOnAddEvent
     if (!isStudyBubbleView) {
       setAddEvent(true);
-    } else {
+    }
+    //If it is StudyBubbleView that means that we have just added an LCard
+    //need to refresh sideBar, studybubblePage
+     else {
       updateActiveStudyBubbleId(currStudyBubble["id"]);
     }
     setRefresh(!refresh);
@@ -158,12 +158,13 @@ export default function MainLayout() {
           <MiddleHeader
             date={selectedDate}
             alternate={isStudyBubbleView}
-            studyBubbleId={isStudyBubbleView ? activeStudyBubbleID : null}
+            studyBubble = {currStudyBubble}
             refreshCallback={addCallback}
           ></MiddleHeader>
           {isStudyBubbleView ? (
             <StudyBubble
-              studyBubbleId={activeStudyBubbleID}
+              studyBubble ={activeStudyBubbleID}
+              studyBubble={currStudyBubble}
               refresh={refresh}
             ></StudyBubble>
           ) : (

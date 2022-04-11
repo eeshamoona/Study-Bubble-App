@@ -36,10 +36,13 @@ const Text2 = styled.h3`
 
 export default function MiddleHeader(props) {
   const handleOnClick = () => {
-    if (props.studyBubbleId) {
-      addLCard("", "", props.studyBubbleId);
+    if (props.alternate) {
+
+      addLCard("", "", props.studyBubble['id']).then((response) => {
+        console.log(response);
+        props.refreshCallback();
+      });
     }
-    props.refreshCallback();
   };
   return (
     <Section1>

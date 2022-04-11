@@ -335,7 +335,9 @@ def get_LCard_with_StudyBubble_id(StudyBubble_id):
         conn = connect_to_db()
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
-        cur.execute("SELECT * FROM LCard WHERE study_bubble_id = ?",(StudyBubble_id))
+        print(StudyBubble_id)
+        cur.execute("SELECT * FROM LCard WHERE study_bubble_id= (?)",(StudyBubble_id,))
+        print("RIP")
         rows = cur.fetchall()
 
         # convert row objects to dictionary
@@ -346,6 +348,7 @@ def get_LCard_with_StudyBubble_id(StudyBubble_id):
             LCard["back"] = i["back"]
             LCard["study_bubble_id"] = i["study_bubble_id"]
             LCards.append(LCard)
+        print(LCards)
 
     except:
         LCards = []
