@@ -17,15 +17,28 @@ const DateObject = styled.div`
   background: ${(props) => props.color};
   border-radius: 17px;
   box-shadow: 0px 3px 6px #00000029;
-  flex-direction: column;
+  flex-direction: row;
   padding: 10px;
   justify-content: space-between;
+  position: relative;
 `;
 
 const Container = styled.div`
   display: flex;
   background: transparent;
   flex-direction: column;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+`;
+
+const Container2 = styled.div`
+  display: flex;
+  background: transparent;
+  flex-direction: column;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 `;
 
 const HourLine = styled.div`
@@ -61,7 +74,7 @@ export default function DateOverlay(props) {
         setStudyBubbles(response);
       }
     );
-  }, [props.selectedDate]);
+  }, [props.selectedDate, props.refresh]);
 
   const getHeightDifference = (textStart, textEnd) => {
     const splitStringsStart = textStart.split(":");
@@ -153,10 +166,10 @@ export default function DateOverlay(props) {
                 <TitleText>{studybubble["title"]}</TitleText>
                 <LocationText>{studybubble["location"]}</LocationText>
               </Container>
-              <Container>
+              <Container2>
                 <NumberText>{studybubble["card_num"]}</NumberText>
                 <SubText>Learning Cards</SubText>
-              </Container>
+              </Container2>
             </DateObject>
           </div>
         );

@@ -93,12 +93,15 @@ const ListItem = styled.li`
 export default function SummaryAdd(props) {
   const [value, setValue] = useState("");
   const [tldrs, setTldrs] = useState([]);
+  const [text, setText] = useState("");
 
   useEffect(() => {
     if (props.studyBubble && props.studyBubble["summary"]) {
-      console.log(props.studyBubble["summary"]);
+      setText(props.studyBubble["summary"]);
       const tempArray = props.studyBubble["summary"].split(";");
       setTldrs(tempArray);
+    } else {
+      setTldrs([]);
     }
   }, [props.studyBubble]);
 
@@ -106,15 +109,18 @@ export default function SummaryAdd(props) {
     setValue(event.target.value);
   };
   const submit = () => {
-    if (props.studyBubble && props.studyBubble["summary"]) {
-      var text = props.studyBubble["summary"];
-      text = text + ";" + value;
+    setText(text + ";" + value);
 
-      updateSummary(props.studyBubble, text).then((response) => {
-        props.refreshCallback();
+    const newText = text + ";" + value;
+
+    updateSummary(props.studyBubble, newText).then((response) => {
+      response.body.then((val) => {
+        const tempArray = val["summary"].split(";");
+        console.log(tempArray);
+        setTldrs(tempArray);
         setValue("");
       });
-    }
+    });
   };
 
   return (

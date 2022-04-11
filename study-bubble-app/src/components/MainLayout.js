@@ -112,22 +112,34 @@ export default function MainLayout() {
   const [currStudyBubble, setCurrStudyBubble] = useState({});
 
   const updateActiveStudyBubbleId = (id) => {
-    setAddEvent(false);
     setActiveStudyBubbleID(id);
     getStudyBubble(id).then((response) => setCurrStudyBubble(response));
+    setAddEvent(false);
     setRefresh(!refresh);
   };
 
   //TODO: Fix these refresh bugs
-  const refreshCallback = () => {
-    //This means that they have clicked the + in the calendar page
+  const addCallback = () => {
+    //If it is StudyBubbleView that means that we have just added an LCard
+    //need to refresh sideBar, studybubblePage
+
+    //If it is not a StudyBubbleView that means we are going to add an evernt
+    //need to turnOnAddEvent
     if (!isStudyBubbleView) {
-      updateAddEvent();
-    }
-    //This is called when summary has been added to
-    else {
+      setAddEvent(true);
+    } else {
       updateActiveStudyBubbleId(currStudyBubble["id"]);
     }
+    setRefresh(!refresh);
+  };
+
+  const buttonRefreshCallback = (id) => {
+    //If this is called it is called within the AddStudyBubble and means we
+    //have just added a new event
+    //need to call updateActiveStudyBubbleId with the new id
+    //setAddEvent to false
+
+    updateActiveStudyBubbleId(id);
     setRefresh(!refresh);
   };
 
@@ -147,7 +159,7 @@ export default function MainLayout() {
             date={selectedDate}
             alternate={isStudyBubbleView}
             studyBubbleId={isStudyBubbleView ? activeStudyBubbleID : null}
-            refreshCallback={refreshCallback}
+            refreshCallback={addCallback}
           ></MiddleHeader>
           {isStudyBubbleView ? (
             <StudyBubble
@@ -158,6 +170,7 @@ export default function MainLayout() {
             <DateOverlay
               activeStudyBubbleCallback={updateActiveStudyBubbleId}
               selectedDate={selectedDate}
+              refresh={refresh}
             ></DateOverlay>
           )}
         </Section4>
@@ -167,7 +180,10 @@ export default function MainLayout() {
           </div>
           <Section5>
             {addEvent ? (
-              <AddStudyBubble selectedDate={selectedDate} refreshCallback = {refreshCallback}></AddStudyBubble>
+              <AddStudyBubble
+                selectedDate={selectedDate}
+                refreshCallback={buttonRefreshCallback}
+              ></AddStudyBubble>
             ) : activeStudyBubbleID ? (
               <>
                 {isStudyBubbleView ? (
@@ -175,12 +191,9 @@ export default function MainLayout() {
                     <SummaryAdd
                       color={currStudyBubble["color"]}
                       studyBubble={currStudyBubble}
-                      refreshCallback={updateActiveStudyBubbleId}
                     ></SummaryAdd>
                     <Button onClick={updateIstStudyBubbleView}>
-                      {isStudyBubbleView
-                        ? "Close the Study Bubble"
-                        : "Open this Study Bubble"}
+                      Close the Study Bubble
                     </Button>
                   </>
                 ) : (
@@ -201,9 +214,7 @@ export default function MainLayout() {
                         </Container>
                       </Section6>
                       <Button onClick={updateIstStudyBubbleView}>
-                        {isStudyBubbleView
-                          ? "Close the Study Bubble"
-                          : "Open this Study Bubble"}
+                        Open this Study Bubble
                       </Button>
                     </Section7>
                   </>
