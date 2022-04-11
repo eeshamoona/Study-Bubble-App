@@ -101,6 +101,7 @@ export default function SummaryAdd(props) {
       const tempArray = props.studyBubble["summary"].split(";");
       setTldrs(tempArray);
     } else {
+      setText("");
       setTldrs([]);
     }
   }, [props.studyBubble]);
@@ -109,7 +110,11 @@ export default function SummaryAdd(props) {
     setValue(event.target.value);
   };
   const submit = () => {
-    setText(text + ";" + value);
+    if (text.length == 0) {
+      setText(value);
+    } else {
+      setText(text + ";" + value);
+    }
 
     const newText = text + ";" + value;
 
