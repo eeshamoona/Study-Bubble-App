@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { getStudyBubbleWithDate } from "../services/study-bubble";
 import { format } from "date-fns";
@@ -67,7 +67,8 @@ const SubText = styled.text`
 
 export default function DateOverlay(props) {
   const [studyBubbles, setStudyBubbles] = useState([]);
-
+  const myRef = useRef(null);
+  const executeScroll = () => myRef.current.scrollIntoView();
   useEffect(() => {
     getStudyBubbleWithDate(format(props.selectedDate, "MMddyyyy")).then(
       (response) => {
@@ -75,6 +76,10 @@ export default function DateOverlay(props) {
       }
     );
   }, [props.selectedDate, props.refresh]);
+
+  useEffect(() => {
+    executeScroll();
+  }, []);
 
   const getHeightDifference = (textStart, textEnd) => {
     const splitStringsStart = textStart.split(":");
@@ -177,6 +182,7 @@ export default function DateOverlay(props) {
         <HourlyView></HourlyView>
       </div>
       <div
+        ref={myRef}
         style={{ top: `${calculateOffsetForCurrentTime()}px` }}
         className="below"
       >
