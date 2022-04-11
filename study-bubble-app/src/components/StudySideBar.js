@@ -90,7 +90,6 @@ export default function StudySideBar(props) {
   };
   useEffect(() => {
     if (props.studyBubble) {
-      console.log(props.studyBubble["card_num"]);
       setCardNum(props.studyBubble["card_num"]);
     }
   }, [props.refresh, props.studyBubble]);

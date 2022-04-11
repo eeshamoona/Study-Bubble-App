@@ -71,9 +71,7 @@ export default function TLDRSection(props) {
   const [tldrs, setTldrs] = useState([]);
 
   useEffect(() => {
-    console.log("OOF");
     if (props.studyBubble && props.studyBubble["summary"]) {
-      console.log(props.studyBubble["summary"]);
       const tempArray = props.studyBubble["summary"].split(";");
       setTldrs(tempArray);
     }

@@ -116,7 +116,6 @@ export default function SummaryAdd(props) {
     updateSummary(props.studyBubble, newText).then((response) => {
       response.body.then((val) => {
         const tempArray = val["summary"].split(";");
-        console.log(tempArray);
         setTldrs(tempArray);
         setValue("");
       });

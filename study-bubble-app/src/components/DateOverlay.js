@@ -126,7 +126,6 @@ export default function DateOverlay(props) {
     const d2 = new Date(
       `${format(props.selectedDate, "MMMM dd, yyyy")} 13:00:00`
     );
-    console.log(diff_minutes(d1, d2));
     return diff_minutes(d1, d2);
   };
 

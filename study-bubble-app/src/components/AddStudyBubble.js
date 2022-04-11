@@ -260,16 +260,7 @@ export default function AddStudyBubble(props) {
         endTime = endHour + ":" + endMinute + " AM";
       }
 
-      console.log(
-        selectedColor,
-        title,
-        location,
-        format(props.selectedDate, "MMddyyyy"),
-        startTime,
-        endTime,
-        "",
-        0
-      );
+      
       addStudyBubble(
         selectedColor,
         title,
