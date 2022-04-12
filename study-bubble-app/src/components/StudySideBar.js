@@ -12,8 +12,9 @@ const Section2 = styled.section`
   align-items: center;
   background: ${(props) => props.color};
   border-radius: 17px;
-  margin-top: 30px;
+  align-self: center;
   margin-left: 25px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   padding: 0px 30px;
@@ -38,6 +39,37 @@ const Section4 = styled.div`
   margin-left: 25px;
   flex-direction: column;
   height: -webkit-fill-available;
+`;
+
+const Section5 = styled.div`
+  padding: 30px 0px;
+  align-items: center;
+  background: transparent;
+  display: flex;
+  margin-left: 25px;
+  flex-direction: column;
+  height: -webkit-fill-available;
+`;
+const Section6 = styled.div`
+  resize: none;
+  overflow: hidden;
+  text-align: left;
+  margin: 10px 0px 15px 0px;
+  padding: 10px;
+  width: -webkit-fill-available;
+  border: none;
+  border-radius: 17px;
+  height: -webkit-fill-available;
+  box-shadow: 0px 3px 6px #00000029;
+  background: ${(props) => props.color};
+`;
+
+const Section7 = styled.div`
+  border-radius: 17px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 186px;
 `;
 
 const Button = styled.button`
@@ -77,15 +109,53 @@ const StyledTextarea = styled.textarea`
   box-shadow: 0px 3px 6px #00000029;
 `;
 
+const InputText = styled.textarea`
+  border-radius: 17px;
+  border: none;
+  box-shadow: 0px 3px 6px #00000029;
+  padding: 10px;
+  height: 50px;
+  width: 50%;
+  overflow-y: scroll;
+  resize: none;
+  flex: auto;
+  background: ${(props) => props.color};
+`;
+
+const EnterButton = styled.button`
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: ${(props) => props.color};
+  filter: brightness(120%);
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  box-shadow: 0px 3px 6px #00000029;
+  font-size: 10px;
+`;
+
 export default function StudySideBar(props) {
   const [notesText, setNotesText] = useState("");
   const [cardNum, setCardNum] = useState("");
+  const [showTodo, setShowTodo] = useState(true);
+  const [value, setValue] = useState("");
+
   const updateNotesText = (event) => {
     setNotesText(event.target.value);
   };
 
   const eraseNotes = (event) => {
     setNotesText("");
+  };
+  const updateValue = (event) => {
+    setValue(event.target.value);
+  };
+  const submit = () => {};
+
+  const switchFunction = () => {
+    setShowTodo(!showTodo);
   };
   useEffect(() => {
     if (props.studyBubble) {
@@ -95,7 +165,7 @@ export default function StudySideBar(props) {
 
   return (
     <Section1>
-      <Section2 color={props.studyBubble["color"]}>
+      <Section2 onClick={switchFunction} color={props.studyBubble["color"]}>
         <Section3>
           <TitleText>{cardNum}</TitleText>
           <SubText>Learning Cards</SubText>
@@ -106,17 +176,38 @@ export default function StudySideBar(props) {
         </Section3>
       </Section2>
       {/* TODO: Switch between a TODO checklist */}
-      <Section4>
-        <SubText2>Notes:</SubText2>
-        <StyledTextarea
-          type="textarea"
-          value={notesText}
-          onChange={updateNotesText}
-        ></StyledTextarea>
-        <Button color={props.studyBubble["color"]} onClick={eraseNotes}>
-          Clear
-        </Button>
-      </Section4>
+      {showTodo ? (
+        <Section5>
+          <SubText2>Task List:</SubText2>
+          <Section6 color={props.studyBubble["color"]}>
+            Display Items Here
+          </Section6>
+          <Section7>
+            <InputText
+              placeholder="Enter task..."
+              value={value}
+              onChange={updateValue}
+            >
+              Placeholder
+            </InputText>
+            <EnterButton onClick={submit} color={props.studyBubble["color"]}>
+              &#10548;
+            </EnterButton>
+          </Section7>
+        </Section5>
+      ) : (
+        <Section4>
+          <SubText2>Notes:</SubText2>
+          <StyledTextarea
+            type="textarea"
+            value={notesText}
+            onChange={updateNotesText}
+          ></StyledTextarea>
+          <Button color={props.studyBubble["color"]} onClick={eraseNotes}>
+            Clear
+          </Button>
+        </Section4>
+      )}
     </Section1>
   );
 }
