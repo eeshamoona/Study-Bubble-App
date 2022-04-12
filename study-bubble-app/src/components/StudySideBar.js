@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { addTask, updateTask, getTasksFromStudyBubble } from "../services/task";
 
 const Section1 = styled.section`
   background: transparent;
@@ -49,13 +50,14 @@ const Section5 = styled.div`
   margin-left: 25px;
   flex-direction: column;
   height: -webkit-fill-available;
+  max-width: 186px;
 `;
 const Section6 = styled.div`
   resize: none;
   overflow: hidden;
   text-align: left;
   margin: 10px 0px 15px 0px;
-  padding: 10px;
+  padding: 15px;
   width: -webkit-fill-available;
   border: none;
   border-radius: 17px;
@@ -122,6 +124,17 @@ const InputText = styled.textarea`
   background: ${(props) => props.color};
 `;
 
+const TaskItemBox = styled.input`
+  margin: 0px 10px 0px !important;
+  cursor: pointer;
+`;
+const TaskItemLabel = styled.label`
+  cursor: pointer;
+  display: block;
+  font-weight: normal;
+  font-size: 14px;
+`;
+
 const EnterButton = styled.button`
   border-radius: 50%;
   border: none;
@@ -141,6 +154,7 @@ export default function StudySideBar(props) {
   const [cardNum, setCardNum] = useState("");
   const [showTodo, setShowTodo] = useState(true);
   const [value, setValue] = useState("");
+  const [taskItems, setTaskItems] = useState([]);
 
   const updateNotesText = (event) => {
     setNotesText(event.target.value);
@@ -152,16 +166,44 @@ export default function StudySideBar(props) {
   const updateValue = (event) => {
     setValue(event.target.value);
   };
-  const submit = () => {};
 
   const switchFunction = () => {
     setShowTodo(!showTodo);
   };
+
+  const checkedBox = (task, index) => {
+    updateTask(
+      task["text"],
+      !task["is_checked"],
+      task["study_bubble_id"],
+      task["id"]
+    ).then((response) => {
+      var newTasks = [...taskItems];
+      response.body.then((val) => {
+        newTasks[index] = val;
+      });
+      setTaskItems(newTasks);
+    });
+  };
+
+  const addTaskItem = () => {
+    addTask(value, 0, props.studyBubble["id"]).then((response) => {
+      var newTasks = [...taskItems];
+      newTasks.push(response);
+      console.log(newTasks);
+      setTaskItems([...taskItems, response]);
+      setValue("");
+    });
+  };
+
   useEffect(() => {
     if (props.studyBubble) {
       setCardNum(props.studyBubble["card_num"]);
+      getTasksFromStudyBubble(props.studyBubble["id"]).then((response) => {
+        setTaskItems(response);
+      });
     }
-  }, [props.refresh, props.studyBubble]);
+  }, [props.refresh, taskItems, props.studyBubble]);
 
   return (
     <Section1>
@@ -175,12 +217,22 @@ export default function StudySideBar(props) {
           <SubText>Minutes Left</SubText>
         </Section3>
       </Section2>
-      {/* TODO: Switch between a TODO checklist */}
       {showTodo ? (
         <Section5>
           <SubText2>Task List:</SubText2>
           <Section6 color={props.studyBubble["color"]}>
-            Display Items Here
+            {taskItems.map((task, i) => {
+              return (
+                <TaskItemLabel>
+                  <TaskItemBox
+                    type="checkbox"
+                    checked={task["is_checked"]}
+                    onChange={() => checkedBox(task, i)}
+                  />
+                  {task["text"]}
+                </TaskItemLabel>
+              );
+            })}
           </Section6>
           <Section7>
             <InputText
@@ -190,7 +242,10 @@ export default function StudySideBar(props) {
             >
               Placeholder
             </InputText>
-            <EnterButton onClick={submit} color={props.studyBubble["color"]}>
+            <EnterButton
+              onClick={addTaskItem}
+              color={props.studyBubble["color"]}
+            >
               &#10548;
             </EnterButton>
           </Section7>

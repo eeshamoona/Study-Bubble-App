@@ -5,8 +5,6 @@ const LEARNINGCARD_ADD_ENDPOINT = "LCards/add";
 const LEARNINGCARD_ALL_ENDPOINT = "LCards/all";
 const LEARNINGCARD_UPDATE_ENDPOINT = "LCards/update";
 
-
-
 function getAllLCards() {
   return apiGet(LEARNINGCARD_ENDPOINT);
 }

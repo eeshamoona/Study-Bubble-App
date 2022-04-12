@@ -144,9 +144,11 @@ export default function SummaryAdd(props) {
           </Section3>
         </>
         <Section4>
-          <InputText value={value} onChange={updateValue}>
-            Placeholder
-          </InputText>
+          <InputText
+            placeholder="Enter summary..."
+            value={value}
+            onChange={updateValue}
+          ></InputText>
           <EnterButton onClick={submit} color={props.color}>
             &#10548;
           </EnterButton>
