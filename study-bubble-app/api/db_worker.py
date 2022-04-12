@@ -26,6 +26,13 @@ def create_db_table():
                         back TEXT,
                         study_bubble_id INTEGER
             )
+            """,
+            """CREATE TABLE IF NOT EXISTS Task(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        text TEXT NOT NULL,
+                        is_checked BOOLEAN,
+                        study_bubble_id INTEGER
+            )
             """
     ]
     db = connect_to_db()
@@ -354,3 +361,124 @@ def get_LCard_with_StudyBubble_id(StudyBubble_id):
         LCards = []
 
     return LCards
+# -----------------------------------------------------------------------------------
+def insert_Task(Task):
+    inserted_Task = {}
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute("INSERT INTO Task (text, is_checked, study_bubble_id) VALUES (?, ?, ?)", 
+                    (Task['text'],   
+                    Task['is_checked'], Task['study_bubble_id']) )
+        conn.commit()
+        inserted_Task = get_Task_by_id(cur.lastrowid)
+    except:
+        conn().rollback()
+
+    finally:
+        conn.close()
+
+    return inserted_Task
+
+def get_Tasks():
+    Tasks = []
+    try:
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM Task")
+        rows = cur.fetchall()
+
+        # convert row objects to dictionary
+        for i in rows:
+            Task = {}
+            Task["id"] = i["id"]
+            Task["text"] = i["text"]
+            Task["is_checked"] = i["is_checked"]
+            Task["study_bubble_id"] = i["study_bubble_id"]
+            Tasks.append(Task)
+
+    except:
+        Tasks = []
+
+    return Tasks
+
+
+def get_Task_by_id(Task_id):
+    Task = {}
+    try:
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM Task WHERE id = ?", 
+                       (Task_id,))
+        row = cur.fetchone()
+
+        # convert row object to dictionary
+        Task["id"] = row["id"]
+        Task["text"] = row["text"]
+        Task["is_checked"] = row["is_checked"]
+        Task["study_bubble_id"] = row["study_bubble_id"]
+    except:
+        Task = {}
+
+    return Task
+
+def update_Task(Task):
+    updated_Task = {}
+    try:
+        conn = connect_to_db()
+        cur = conn.cursor()
+        cur.execute("UPDATE Task SET text = ?, is_checked = ?, study_bubble_id = ? WHERE id =?",  
+                     (Task["text"], Task["is_checked"], Task["study_bubble_id"], 
+                     Task["id"],))
+        conn.commit()
+        #return the user
+        updated_Task = get_Task_by_id(Task["id"])
+
+    except:
+        conn.rollback()
+        updated_Task = {}
+    finally:
+        conn.close()
+
+    return updated_Task
+
+def delete_Task(Task_id):
+    message = {}
+    try:
+        conn = connect_to_db()
+        conn.execute("DELETE from Task WHERE id = ?",     
+                      (Task_id,))
+        conn.commit()
+        message["status"] = "Task deleted successfully"
+    except:
+        conn.rollback()
+        message["status"] = "Cannot delete Task"
+    finally:
+        conn.close()
+
+    return message
+
+def get_Task_with_StudyBubble_id(StudyBubble_id):
+    Tasks = []
+    try:
+        conn = connect_to_db()
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM Task WHERE study_bubble_id= (?)",(StudyBubble_id,))
+        rows = cur.fetchall()
+
+        # convert row objects to dictionary
+        for i in rows:
+            Task = {}
+            Task["id"] = i["id"]
+            Task["text"] = i["text"]
+            Task["is_checked"] = i["is_checked"]
+            Task["study_bubble_id"] = i["study_bubble_id"]
+            Tasks.append(Task)
+
+    except:
+        Tasks = []
+
+    return Tasks

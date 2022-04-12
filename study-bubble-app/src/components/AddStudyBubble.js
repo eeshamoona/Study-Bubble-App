@@ -121,6 +121,7 @@ const NumberInput = styled.input`
     border: 1px solid #00000030;
   }
 `;
+
 const BottomHalf = styled.div`
   margin: 10px;
   margin-top: 0px;
@@ -129,6 +130,7 @@ const BottomHalf = styled.div`
   align-items: center;
   width: -webkit-fill-available;
 `;
+
 const DateText = styled.text`
   font-size: 16px;
   color: #707070;

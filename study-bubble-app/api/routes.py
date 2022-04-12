@@ -62,6 +62,34 @@ def api_delete_LCard(LCard_id):
 def api_get_LCard_with_StudyBubble_id(StudyBubble_id):
     return jsonify(db_worker.get_LCard_with_StudyBubble_id(StudyBubble_id))
 
+# ---------------------------------------------------------------------
+@app.route('/api/Tasks/', methods=['GET'])
+def api_get_Tasks():
+    return jsonify(db_worker.get_Tasks())
+
+@app.route('/api/Tasks/<Task_id>/', methods=['GET'])
+def api_get_Task(Task_id):
+    return jsonify(db_worker.get_Task_by_id(Task_id))
+
+@app.route('/api/Tasks/add/',  methods = ['POST'])
+def api_add_Task():
+    Task = request.get_json()
+    return jsonify(db_worker.insert_Task(Task))
+
+@app.route('/api/Tasks/update/',  methods = ['PUT'])
+def api_update_Task():
+    Task = request.get_json()
+    return jsonify(db_worker.update_Task(Task))
+
+@app.route('/api/Tasks/delete/<Task_id>/',  methods = ['DELETE'])
+def api_delete_Task(Task_id):
+    return jsonify(db_worker.delete_Task(Task_id))
+
+@app.route('/api/Tasks/all/<StudyBubble_id>/', methods=['GET'])
+def api_get_Task_with_StudyBubble_id(StudyBubble_id):
+    return jsonify(db_worker.get_Task_with_StudyBubble_id(StudyBubble_id))
+
+
 """
 Enable CORS. Disable it if you don't need CORS
 """

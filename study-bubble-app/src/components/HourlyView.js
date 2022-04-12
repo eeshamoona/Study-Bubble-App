@@ -67,6 +67,7 @@ const getHourLines = () => {
   );
   return <Section>{hours}</Section>;
 };
+
 export default function HourlyView(props) {
   return getHourLines();
 }
