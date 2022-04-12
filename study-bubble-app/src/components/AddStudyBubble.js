@@ -85,10 +85,6 @@ const NumberVStack = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-const PickColorText = styled.div`
-  font-size: 18px;
-  color: #707070;
-`;
 
 const TextInput = styled.input`
   outline: none;

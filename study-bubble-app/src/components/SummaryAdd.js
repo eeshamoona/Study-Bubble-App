@@ -110,7 +110,7 @@ export default function SummaryAdd(props) {
     setValue(event.target.value);
   };
   const submit = () => {
-    if (text.length == 0) {
+    if (text.length === 0) {
       setText(value);
     } else {
       setText(text + ";" + value);

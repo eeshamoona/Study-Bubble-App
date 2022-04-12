@@ -5,12 +5,6 @@ import { format } from "date-fns";
 import HourlyView from "./HourlyView";
 import "./DateOverlay.css";
 
-const Section = styled.section`
-  background: transparent;
-  overflow-y: scroll;
-  position: "relative";
-`;
-
 const DateObject = styled.div`
   display: flex;
   margin: 0px 20px;
@@ -92,10 +86,10 @@ export default function DateOverlay(props) {
     const minutesEnd = parseInt(splitStringsEnd[1].split(" ")[0]);
     const AMPMEnd = splitStringsEnd[1].split(" ")[1];
 
-    if (AMPMStart == "PM") {
+    if (AMPMStart === "PM") {
       initialHourStart = initialHourStart + 12;
     }
-    if (AMPMEnd == "PM") {
+    if (AMPMEnd === "PM") {
       initialHourEnd = initialHourEnd + 12;
     }
 

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import LearningCard from "./LearningCard";
 import { getLCardsFromStudyBubble } from "../services/learning-card";
-import { getStudyBubble } from "../services/study-bubble";
 
 const Section1 = styled.section`
   background: transparent;

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { getStudyBubble } from "../services/study-bubble";
 
 const Section1 = styled.section`
   background: transparent;
@@ -106,6 +105,7 @@ export default function StudySideBar(props) {
           <SubText>Minutes Left</SubText>
         </Section3>
       </Section2>
+      {/* TODO: Switch between a TODO checklist */}
       <Section4>
         <SubText2>Notes:</SubText2>
         <StyledTextarea

@@ -107,9 +107,7 @@ export default function MainLayout() {
     setRefresh(!refresh);
     updateActiveStudyBubbleId(currStudyBubble["id"]);
   };
-  const updateAddEvent = () => {
-    setAddEvent(!addEvent);
-  };
+
   const [activeStudyBubbleID, setActiveStudyBubbleID] = useState(null);
   const [currStudyBubble, setCurrStudyBubble] = useState({});
 
@@ -165,7 +163,6 @@ export default function MainLayout() {
           ></MiddleHeader>
           {isStudyBubbleView ? (
             <StudyBubble
-              studyBubble={activeStudyBubbleID}
               studyBubble={currStudyBubble}
               refresh={refresh}
             ></StudyBubble>
