@@ -113,9 +113,11 @@ export default function MainLayout() {
 
   const updateActiveStudyBubbleId = (id) => {
     setActiveStudyBubbleID(id);
-    getStudyBubble(id).then((response) => setCurrStudyBubble(response));
+    getStudyBubble(id).then((response) => {
+      setRefresh(!refresh);
+      setCurrStudyBubble(response);
+    });
     setAddEvent(false);
-    setRefresh(!refresh);
   };
 
   //TODO: Fix these refresh bugs

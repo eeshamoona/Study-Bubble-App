@@ -116,7 +116,7 @@ const InputText = styled.textarea`
   border: none;
   box-shadow: 0px 3px 6px #00000029;
   padding: 10px;
-  height: 50px;
+  height: 20px;
   width: 50%;
   overflow-y: scroll;
   resize: none;
@@ -133,6 +133,7 @@ const TaskItemLabel = styled.label`
   display: block;
   font-weight: normal;
   font-size: 14px;
+  padding: 5px 0px;
 `;
 
 const EnterButton = styled.button`
@@ -152,7 +153,7 @@ const EnterButton = styled.button`
 export default function StudySideBar(props) {
   const [notesText, setNotesText] = useState("");
   const [cardNum, setCardNum] = useState("");
-  const [showTodo, setShowTodo] = useState(true);
+  const [showTodo, setShowTodo] = useState(false);
   const [value, setValue] = useState("");
   const [taskItems, setTaskItems] = useState([]);
 
