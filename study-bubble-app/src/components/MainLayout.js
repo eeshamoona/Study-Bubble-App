@@ -104,6 +104,8 @@ export default function MainLayout() {
 
   const updateIstStudyBubbleView = () => {
     setIsStudyBubbleView(!isStudyBubbleView);
+    setRefresh(!refresh);
+    updateActiveStudyBubbleId(currStudyBubble["id"]);
   };
   const updateAddEvent = () => {
     setAddEvent(!addEvent);
@@ -127,7 +129,7 @@ export default function MainLayout() {
     }
     //If it is StudyBubbleView that means that we have just added an LCard
     //need to refresh sideBar, studybubblePage
-     else {
+    else {
       updateActiveStudyBubbleId(currStudyBubble["id"]);
     }
     setRefresh(!refresh);
@@ -158,12 +160,12 @@ export default function MainLayout() {
           <MiddleHeader
             date={selectedDate}
             alternate={isStudyBubbleView}
-            studyBubble = {currStudyBubble}
+            studyBubble={currStudyBubble}
             refreshCallback={addCallback}
           ></MiddleHeader>
           {isStudyBubbleView ? (
             <StudyBubble
-              studyBubble ={activeStudyBubbleID}
+              studyBubble={activeStudyBubbleID}
               studyBubble={currStudyBubble}
               refresh={refresh}
             ></StudyBubble>
@@ -202,6 +204,7 @@ export default function MainLayout() {
                     <TLDRSection
                       color={currStudyBubble["color"]}
                       studyBubble={currStudyBubble}
+                      refresh={refresh}
                     ></TLDRSection>
                     <Section7>
                       <Section6>

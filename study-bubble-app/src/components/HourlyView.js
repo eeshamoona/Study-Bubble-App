@@ -16,7 +16,8 @@ const HourLine = styled.div`
   flex: 1;
 
   &:hover {
-    background: #cbc3e3;
+    background: white;
+    filter: brightness(111%);
   }
 `;
 

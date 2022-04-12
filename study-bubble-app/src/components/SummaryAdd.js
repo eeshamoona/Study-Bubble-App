@@ -98,7 +98,7 @@ export default function SummaryAdd(props) {
   useEffect(() => {
     if (props.studyBubble && props.studyBubble["summary"]) {
       setText(props.studyBubble["summary"]);
-      const tempArray = props.studyBubble["summary"].split(";");
+      const tempArray = props.studyBubble["summary"].split(";").filter(Boolean);
       setTldrs(tempArray);
     } else {
       setText("");
@@ -120,7 +120,8 @@ export default function SummaryAdd(props) {
 
     updateSummary(props.studyBubble, newText).then((response) => {
       response.body.then((val) => {
-        const tempArray = val["summary"].split(";");
+        const tempArray = val["summary"].split(";").filter(Boolean);
+        console.log(tempArray);
         setTldrs(tempArray);
         setValue("");
       });
