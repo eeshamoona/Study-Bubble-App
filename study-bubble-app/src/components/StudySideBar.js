@@ -204,7 +204,7 @@ export default function StudySideBar(props) {
         setTaskItems(response);
       });
     }
-  }, [props.refresh, taskItems, props.studyBubble]);
+  }, [props.refresh, props.studyBubble]);
 
   return (
     <Section1>
